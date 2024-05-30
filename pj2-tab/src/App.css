@@ -1,0 +1,11 @@
+.tab-list button {
+  border: 1px solid #c1c1c1;
+  background-color: transparent;
+  width: 150px;
+  height: 35px;
+  border-radius: 3px;
+}
+.tab-list button.active {
+  background-color: #e1664b;
+  color: #fff;
+}
