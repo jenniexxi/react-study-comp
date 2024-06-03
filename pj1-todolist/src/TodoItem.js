@@ -11,6 +11,7 @@ function TodoItem ({item, i, deleteTodo}) {
 
     const onClickDelete = () => {
         deleteTodo(i)
+        
     }
     
     return (
