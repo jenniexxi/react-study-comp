@@ -5,6 +5,10 @@ function CoinDetail() {
     return (
         <div>
             <h1>CoinDetail{coinId}</h1>
+            {/* <p>{`djfhdjhfhj${coinId}`}</p> */}
+            <div>
+                
+            </div>
         </div>
     )
 }

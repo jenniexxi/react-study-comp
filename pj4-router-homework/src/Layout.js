@@ -1,5 +1,6 @@
 import { Outlet } from "react-router-dom";
-import Gnb from "./Gnb";
+import Gnb from "./components/gnb";
+// import Gnb from "./Gnb";
 
 function Layout() {
     return (
