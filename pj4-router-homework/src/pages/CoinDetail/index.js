@@ -14,8 +14,8 @@ function CoinDetail() {
         try {
             const result = await getCoinDetail(coinId);
             setCoinInfo(result);
-        } catch {
-            console.log('error');
+        } catch (e){
+            console.log('error',e);
         }
         
     }

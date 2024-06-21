@@ -29,10 +29,11 @@ function CoinList() {
     const getCoins = async () =>{
         try {
             const result = await getCoinList();
+            
             setIsLoading(false); // 로딩 끝남
-            setCoinList(result);
-        } catch {
-            console.log('error');
+            setCoinList(result.slice(0,100));
+        } catch (e){
+            console.log('error',e);
         }
         
     }

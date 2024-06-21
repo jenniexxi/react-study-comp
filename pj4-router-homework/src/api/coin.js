@@ -1,5 +1,5 @@
 export const getCoinList = async () => {
-    let result = await fetch('https://api.coinpaprika.com/v1/coins');
+    let result = await fetch(`https://api.coinpaprika.com/v1/coins`);
     result = await result.json();
     return result.slice(0, 100); // 개수가 많아서 100개만 가져오게 해주었음.
 }
