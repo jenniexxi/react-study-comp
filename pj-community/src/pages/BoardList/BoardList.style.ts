@@ -5,15 +5,42 @@ export const BoardListWrapper = styled.div`
   margin: 0 auto;
 `;
 
-export const MainTabList = styled.ul`
+export const MainTabList = styled.div`
+`;
+
+export const TabWrapper = styled.div`
+  width: 100%;
+  margin: 0 auto;
   border-bottom: 1px solid #e5e9ef;
 `;
 
-export const Wrapperin = styled.div`
+export const TabWrapperIn = styled.div`
   width: 768px;
   margin: 0 auto;
   display: flex;
   gap: 16px;
+`;
+
+export const CategoryWrapper = styled.div`
+  width: 100%;
+  margin: 0 auto;
+  border-bottom: 1px solid #e5e9ef;
+`;
+
+export const CategoryWrapperIn = styled.div`
+  width: 768px;
+  margin: 0 auto;
+  display: flex;
+  gap: 8px;
+  padding: 12px 0;
+`;
+
+export const CategoryTab = styled.div`
+  padding: 6.5px 12px;
+  border-radius: 20px;
+  background-color: #fff;
+  border: 1px solid #e5e9ef;
+  cursor: pointer;
 `;
 
 export const MainTabItem = styled.li<{ selected: boolean }>`
@@ -54,6 +81,7 @@ export const ListItemContainer = styled.div`
   margin: 0 auto 8px;
   padding: 20px;
   gap: 80px;
+  justify-content: space-between;
 `;
 
 // ListBox 를 공통으로 받는다고 생각하면 아래와 같이 할 수 있음
