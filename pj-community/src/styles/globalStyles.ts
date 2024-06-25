@@ -28,8 +28,10 @@ const GlobalStyles = createGlobalStyle`
     }
     body {
         line-height: 1;
+        color: #202434;
+        font-size: 14px;
     }
-    ol, ul {
+    ol, ul, li {
         list-style: none;
     }
     blockquote, q {
@@ -46,6 +48,9 @@ const GlobalStyles = createGlobalStyle`
     }
     a {
         text-decoration: none;
+    }
+    *:focus {
+        outline: none;
     }
 `;
 

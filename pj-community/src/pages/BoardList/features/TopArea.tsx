@@ -1,12 +1,13 @@
 import Search from "./Search";
 import Tab from "./Tab";
+import * as S from "../BoardList.style";
 
 const TopArea = () => {
   return (
-    <div>
+    <S.BoardListWrapper>
       <Search />
       <Tab />
-    </div>
+    </S.BoardListWrapper>
   );
 };
 

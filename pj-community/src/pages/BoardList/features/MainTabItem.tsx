@@ -1,4 +1,5 @@
 import * as S from "../BoardList.style";
+
 type Props = {
   selected: boolean;
   onSelect: () => void;

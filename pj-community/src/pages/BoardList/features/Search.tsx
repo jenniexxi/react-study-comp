@@ -1,8 +1,10 @@
+import * as S from "../BoardList.style";
+
 const Search = () => {
   return (
-    <div>
+    <S.SearchBar>
       <input type="search" placeholder="검색 내용을 입력해주세요" />
-    </div>
+    </S.SearchBar>
   );
 };
 
