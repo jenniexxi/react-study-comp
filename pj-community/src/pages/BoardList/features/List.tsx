@@ -1,9 +1,10 @@
 import { useState } from "react";
-import HeartIcon from "../../../resources/svg/heart";
 import * as S from "../BoardList.style";
-import CommentIcon from "../../../resources/svg/comment";
+import CommentIcon from "@resources/svg/comment";
+import ViewIcon from "@resources/svg/view";
+import HeartIcon from "@resources/svg/heart";
 import dayjs from "dayjs";
-import ViewIcon from "../../../resources/svg/view";
+
 
 const List = () => {
   const [isLike, setIsLike] = useState(false);

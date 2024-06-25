@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import MainTabItem from "./MainTabItem";
 import * as S from "../BoardList.style";
-import { Category, getCategory } from "../../../api/api";
+import { getCategory, Category } from "@api/api";
 
 type TAB = "1" | "2" | "3";
 
