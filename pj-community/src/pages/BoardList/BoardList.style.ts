@@ -1,12 +1,11 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 export const BoardListWrapper = styled.div`
   width: 100%;
   margin: 0 auto;
 `;
 
-export const MainTabList = styled.div`
-`;
+export const MainTabList = styled.div``;
 
 export const TabWrapper = styled.div`
   width: 100%;
@@ -35,12 +34,21 @@ export const CategoryWrapperIn = styled.div`
   padding: 12px 0;
 `;
 
-export const CategoryTab = styled.div`
+export const CategoryTab = styled.div<{ selected: boolean }>`
   padding: 6.5px 12px;
   border-radius: 20px;
-  background-color: #fff;
-  border: 1px solid #e5e9ef;
   cursor: pointer;
+  ${(props) =>
+    props.selected
+      ? css`
+          border: 1px solid #202434;
+          background-color: #202434;
+          color: #fff;
+        `
+      : css`
+          background-color: #fff;
+          border: 1px solid #e5e9ef;
+        `};
 `;
 
 export const MainTabItem = styled.li<{ selected: boolean }>`

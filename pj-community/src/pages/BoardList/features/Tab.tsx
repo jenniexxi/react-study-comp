@@ -18,7 +18,9 @@ const MAIN_TAB: MainTab[] = [
 
 const Tab = () => {
   const [selected, setSelected] = useState<TAB>("1");
+  // <Category> 는 api.ts 에서 가져오는 것이다.
   const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategories, setSelectedCategories] = useState("1");
 
   useEffect(() => {
     getCategories(selected);
@@ -37,6 +39,11 @@ const Tab = () => {
   const selectTab = (tabId: TAB) => {
     setSelected(tabId);
   };
+
+  const selectCategory = (categorycd: string) => {
+    setSelectedCategories(categorycd);
+  };
+
   return (
     <S.MainTabList>
       <S.TabWrapper>
@@ -71,7 +78,13 @@ const Tab = () => {
         <S.CategoryWrapper>
           <S.CategoryWrapperIn>
             {categories.map((item) => (
-              <S.CategoryTab key={item.categorycd}>
+              <S.CategoryTab
+                key={item.categorycd}
+                selected={selectedCategories === item.categorycd}
+                onClick={() => {
+                  selectCategory(item.categorycd);
+                }}
+              >
                 {item.cateogrynm}
               </S.CategoryTab>
             ))}
