@@ -2,6 +2,7 @@ import { useState } from "react";
 import ListItem from "./features/ListItem";
 import TopArea from "./features/TopArea";
 import { List } from "@api/api";
+import { Link } from "react-router-dom";
 
 const BoardList = () => {
   const [list, setList] = useState<List[]>([]);
@@ -14,7 +15,9 @@ const BoardList = () => {
     <>
       <TopArea saveList={saveList} />
       {list.map((item) => (
-        <ListItem item={item} />
+        <Link to={`/detail/${item.boardid}`}>
+          <ListItem item={item} />
+        </Link>
       ))}
     </>
   );
