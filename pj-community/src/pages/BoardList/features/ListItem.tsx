@@ -6,6 +6,7 @@ import * as S from "../BoardList.style";
 import { CommentIcon, HeartIcon, ViewIcon } from "@resources/svg";
 import dayjs from "dayjs";
 import { List } from "@api/api";
+import EllipsisText from "@components/EllipsisText";
 
 type Props = {
   item: List;
@@ -42,7 +43,9 @@ const ListItem = ({ item }: Props) => {
           </S.UserInfo>
           <S.ListConts>
             <h3>{item.title}</h3>
-            <p>{item.content}</p>
+            <EllipsisText line={2} text={item.content} />
+            {/* <p>{item.content}</p> */}
+            {/* <p>{item.content > 2 ? ${item.content} : ${item.content}...}</p> */}
           </S.ListConts>
           <S.Reaction>
             <S.BoxItem>
