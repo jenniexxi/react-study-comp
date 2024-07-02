@@ -5,26 +5,44 @@ import * as S from "../BoardList.style";
 // import HeartIcon from "@resources/svg/heart";
 import { CommentIcon, HeartIcon, ViewIcon } from "@resources/svg";
 import dayjs from "dayjs";
+import { List } from "@api/api";
 
-const List = () => {
+type Props = {
+  item: List;
+};
+
+const ListItem = ({ item }: Props) => {
   const [isLike, setIsLike] = useState(false);
-  const targetDate = dayjs("2024-06-24 16:00:00");
+  console.log(item);
+
+  const changeDays = (): string => {
+    //기존에 쓰던거 : {dayjs().diff(item.createtime, "hour")} 시간전
+    const diffTimeHours = dayjs().diff(item.createtime, "hour");
+    const diffTimeMonths = dayjs().diff(item.createtime, "month");
+
+    if (diffTimeMonths >= 1) {
+      return `${diffTimeMonths}달 전`;
+    } else if (diffTimeHours >= 24) {
+      return `${Math.floor(diffTimeHours / 24)}일 전`;
+    } else {
+      return `${diffTimeHours}시간 전`;
+    }
+  };
 
   return (
     <S.ListContainer>
       <S.ListItemContainer>
         <S.LeftListBox>
           <S.UserInfo>
-            <i></i>
-            <span>닉네임</span>
+            <i>
+              <img src={item.profileimage} />
+            </i>
+            <span>{item.name}</span>
             <img src="../public/resources/images/img_badge_battery.png" />
           </S.UserInfo>
           <S.ListConts>
-            <h3>제목</h3>
-            <p>
-              작성한 글의 내용이 여기에 노출되는데, 내용이 길어져서 최대 두 줄을
-              초과하는 경우는 제일 끝에 ellipsis 말줄임 처리를 부탁드려요...
-            </p>
+            <h3>{item.title}</h3>
+            <p>{item.content}</p>
           </S.ListConts>
           <S.Reaction>
             <S.BoxItem>
@@ -36,7 +54,7 @@ const List = () => {
               >
                 <HeartIcon color={isLike ? "#ff0000" : "#DADFE8"} />
               </S.IconBox>
-              <S.Text>99%</S.Text>
+              <S.Text>{item.like}%</S.Text>
             </S.BoxItem>
             <S.BoxItem>
               <S.IconBox style={{}}>
@@ -48,15 +66,17 @@ const List = () => {
               <S.IconBox className="IconBox">
                 <ViewIcon />
               </S.IconBox>
-              <S.Text>1,084</S.Text>
+              <S.Text>{item.viewer}</S.Text>
             </S.BoxItem>
           </S.Reaction>
         </S.LeftListBox>
         <S.RightListBox>
-          <S.PostTime>{dayjs().diff(targetDate, "hour")}시간전</S.PostTime>
+          <S.PostTime>{changeDays()}</S.PostTime>
           <S.ImgConts src="../public/resources/images/img_conts.png" />
           <S.Category>
-            <S.TypeFinance>재테크소통</S.TypeFinance>
+            <S.TypeFinance>
+              {item.type === "1" ? "꿀팁자랑" : "제테크소통"}
+            </S.TypeFinance>
           </S.Category>
         </S.RightListBox>
       </S.ListItemContainer>
@@ -64,4 +84,4 @@ const List = () => {
   );
 };
 
-export default List;
+export default ListItem;

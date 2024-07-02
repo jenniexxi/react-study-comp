@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import MainTabItem from "./MainTabItem";
 import * as S from "../BoardList.style";
-import { getCategory, Category } from "@api/api";
+import { getCategory, Category, getList, List } from "@api/api";
 
 type TAB = "1" | "2" | "3";
 
@@ -10,13 +10,17 @@ type MainTab = {
   id: TAB;
 };
 
+type Props = {
+  saveList: (list: List[]) => void;
+};
+
 const MAIN_TAB: MainTab[] = [
   { title: "인기", id: "1" },
   { title: "커뮤니티", id: "2" },
   { title: "혜택", id: "3" },
 ];
 
-const Tab = () => {
+const Tab = ({ saveList }: Props) => {
   const [selected, setSelected] = useState<TAB>("1");
   // <Category> 는 api.ts 에서 가져오는 것이다.
   const [categories, setCategories] = useState<Category[]>([]);
@@ -26,10 +30,13 @@ const Tab = () => {
     getCategories(selected);
   }, [selected]);
 
+  useEffect(() => {
+    getLists(selectedCategories, selected);
+  }, [selectedCategories, selected]);
+
   const getCategories = async (tabId: string) => {
     try {
       const result = await getCategory(tabId);
-      console.log(result);
       setCategories(result);
     } catch (e) {
       console.log("error", e);
@@ -42,6 +49,15 @@ const Tab = () => {
 
   const selectCategory = (categorycd: string) => {
     setSelectedCategories(categorycd);
+  };
+
+  const getLists = async (category: string, tab: string) => {
+    try {
+      const result = await getList(category, tab);
+      saveList(result);
+    } catch (err) {
+      console.log("error", err);
+    }
   };
 
   return (

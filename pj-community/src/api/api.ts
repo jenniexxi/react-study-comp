@@ -10,13 +10,57 @@ const axiosInstance = axios.create({
   },
 });
 
+// response 값의 형태
 export type Category = {
   categorycd: string;
   cateogrynm: string;
 };
+
+// async (request parammeters 값을 넣어줌)
+// get 방식
 export const getCategory = async (tabId: string): Promise<Category[]> => {
   const result = await axiosInstance.get(`/category?tabid=${tabId}`);
-  // tabid 는 api 에서 정해준 이름값
+  // tabid 는 백엔드 서버와 프론트가 합의한 이름
+
+  return result.data;
+};
+
+export type List = {
+  boardid: string;
+  title: string;
+  content: string;
+  name: string;
+  profileimage: string;
+  like: number;
+  viewer: number;
+  type: string;
+  createtime: string;
+};
+
+// post 방식
+export const getList = async (
+  category: string,
+  tab: string
+): Promise<List[]> => {
+  const body = { category: category, tab: tab };
+
+  const result = await axiosInstance.post(`/list`, body);
+  
+  // response 예시
+  // 위쪽 export type List
+  // [
+  //   {
+  //     "boardid": "게시판 id",
+  //     "title": "제목",
+  //     "content": "글 작성 내용",
+  //     "name": "작성자 이름",
+  //     "profileimage": "http:// .....png",
+  //     "like": 0,
+  //     "viewer": 0,
+  //     "type": "0,1",
+  //     "createTime": "string"
+  //   }
+  // ]
 
   return result.data;
 };

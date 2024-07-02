@@ -79,7 +79,7 @@ export const SearchBar = styled.div`
 
 export const ListContainer = styled.div`
   background-color: #f4f6f8;
-  padding: 8px 0 232px;
+  padding: 8px 0 8px;
 `;
 
 export const ListItemContainer = styled.div`
@@ -107,10 +107,12 @@ export const UserInfo = styled.div`
   gap: 4px;
   align-items: center;
   i {
-    width: 28px;
-    height: 28px;
-    background-color: #f4f6f8;
-    border-radius: 50%;
+    img {
+      width: 28px;
+      height: 28px;
+      background-color: #f4f6f8;
+      border-radius: 50%;
+    }
   }
 `;
 
