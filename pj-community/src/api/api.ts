@@ -45,7 +45,7 @@ export const getList = async (
   const body = { category: category, tab: tab };
 
   const result = await axiosInstance.post(`/list`, body);
-  
+
   // response 예시
   // 위쪽 export type List
   // [
@@ -69,3 +69,26 @@ export const getList = async (
 // object 방식으로 여러개 가져올 수도 있음.
 // axios 로 하면 json 으로 안 바꿔줘도 됨
 // fetch는 json 형식으로 안 주기 때문에 우리가 바꿔줘야함
+
+// detail
+export type ListContentsDetail = {
+  boardid: string;
+  title: string;
+  content: string;
+  viewer: number;
+  like: number;
+  name: string;
+  profileimage: string;
+  type: string;
+  createtime: string;
+  paytype: string;
+  store: string;
+};
+
+export const getDetail = async (
+  boardid: string
+): Promise<ListContentsDetail> => {
+  const result = await axiosInstance.get(`/detail?boardid=${boardid}`);
+
+  return result.data;
+};
