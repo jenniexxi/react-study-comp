@@ -4,6 +4,7 @@ import * as S from "../BoardList.style";
 import { List } from "@api/api";
 
 type Props = {
+  // 함수
   saveList: (list: List[]) => void;
 };
 

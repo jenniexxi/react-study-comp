@@ -7,6 +7,7 @@ import { CommentIcon, HeartIcon, ViewIcon } from "@resources/svg";
 import dayjs from "dayjs";
 import { List } from "@api/api";
 import EllipsisText from "@components/EllipsisText";
+// import { Link } from "react-router-dom";
 
 type Props = {
   item: List;
@@ -33,55 +34,57 @@ const ListItem = ({ item }: Props) => {
   return (
     <S.ListContainer>
       <S.ListItemContainer>
-        <S.LeftListBox>
-          <S.UserInfo>
-            <i>
-              <img src={item.profileimage} />
-            </i>
-            <span>{item.name}</span>
-            <img src="../public/resources/images/img_badge_battery.png" />
-          </S.UserInfo>
-          <S.ListConts>
-            <h3>{item.title}</h3>
-            <EllipsisText line={2} text={item.content} />
-            {/* <p>{item.content}</p> */}
-            {/* <p>{item.content > 2 ? ${item.content} : ${item.content}...}</p> */}
-          </S.ListConts>
-          <S.Reaction>
-            <S.BoxItem>
-              <S.IconBox
-                style={{}}
-                onClick={() => {
-                  setIsLike(!isLike);
-                }}
-              >
-                <HeartIcon color={isLike ? "#ff0000" : "#DADFE8"} />
-              </S.IconBox>
-              <S.Text>{item.like}%</S.Text>
-            </S.BoxItem>
-            <S.BoxItem>
-              <S.IconBox style={{}}>
-                <CommentIcon />
-              </S.IconBox>
-              <S.Text>23</S.Text>
-            </S.BoxItem>
-            <S.BoxItem>
-              <S.IconBox className="IconBox">
-                <ViewIcon />
-              </S.IconBox>
-              <S.Text>{item.viewer}</S.Text>
-            </S.BoxItem>
-          </S.Reaction>
-        </S.LeftListBox>
-        <S.RightListBox>
-          <S.PostTime>{changeDays()}</S.PostTime>
-          <S.ImgConts src="../public/resources/images/img_conts.png" />
-          <S.Category>
-            <S.TypeFinance>
-              {item.type === "1" ? "꿀팁자랑" : "제테크소통"}
-            </S.TypeFinance>
-          </S.Category>
-        </S.RightListBox>
+        <S.ListItemLink to={`/detail/${item.boardid}`}>
+          <S.LeftListBox>
+            <S.UserInfo>
+              <i>
+                <img src={item.profileimage} />
+              </i>
+              <span>{item.name}</span>
+              <img src="../public/resources/images/img_badge_battery.png" />
+            </S.UserInfo>
+            <S.ListConts>
+              <h3>{item.title}</h3>
+              <EllipsisText line={2} text={item.content} />
+              {/* <p>{item.content}</p> */}
+              {/* <p>{item.content > 2 ? ${item.content} : ${item.content}...}</p> */}
+            </S.ListConts>
+            <S.Reaction>
+              <S.BoxItem>
+                <S.IconBox
+                  style={{}}
+                  onClick={() => {
+                    setIsLike(!isLike);
+                  }}
+                >
+                  <HeartIcon color={isLike ? "#ff0000" : "#DADFE8"} />
+                </S.IconBox>
+                <S.Text>{item.like}%</S.Text>
+              </S.BoxItem>
+              <S.BoxItem>
+                <S.IconBox style={{}}>
+                  <CommentIcon />
+                </S.IconBox>
+                <S.Text>23</S.Text>
+              </S.BoxItem>
+              <S.BoxItem>
+                <S.IconBox className="IconBox">
+                  <ViewIcon />
+                </S.IconBox>
+                <S.Text>{item.viewer}</S.Text>
+              </S.BoxItem>
+            </S.Reaction>
+          </S.LeftListBox>
+          <S.RightListBox>
+            <S.PostTime>{changeDays()}</S.PostTime>
+            <S.ImgConts src="../public/resources/images/img_conts.png" />
+            <S.Category>
+              <S.TypeFinance>
+                {item.type === "1" ? "꿀팁자랑" : "제테크소통"}
+              </S.TypeFinance>
+            </S.Category>
+          </S.RightListBox>
+        </S.ListItemLink>
       </S.ListItemContainer>
     </S.ListContainer>
   );

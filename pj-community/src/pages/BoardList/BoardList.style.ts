@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled, { css } from "styled-components";
 
 export const BoardListWrapper = styled.div`
@@ -84,17 +85,20 @@ export const ListContainer = styled.div`
 
 export const ListItemContainer = styled.div`
   background-color: #fff;
-  display: flex;
   width: 768px;
   margin: 0 auto 8px;
-  padding: 20px;
-  gap: 80px;
-  justify-content: space-between;
 `;
 
 // ListBox 를 공통으로 받는다고 생각하면 아래와 같이 할 수 있음
 // export const ListBox = styled.div``;
 // export const LeftListBox = styled(ListBox)``
+
+export const ListItemLink = styled(Link)`
+  display: flex;
+  padding: 20px;
+  gap: 80px;
+  justify-content: space-between;
+`;
 
 export const LeftListBox = styled.div``;
 
