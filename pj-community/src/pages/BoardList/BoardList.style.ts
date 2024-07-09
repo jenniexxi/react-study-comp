@@ -52,6 +52,7 @@ export const CategoryTab = styled.div<{ selected: boolean }>`
         `};
 `;
 
+//selected 는 기본으로 제공하는 props가  아니고 정해준 이름값 : boolean은 type
 export const MainTabItem = styled.li<{ selected: boolean }>`
   color: ${(props) => (props.selected ? "#202434" : "#adb2c4")};
   font-weight: ${(props) => (props.selected ? "bold" : "500")};

@@ -5,6 +5,7 @@ import { ListContentsDetail, getDetail } from "@api/api";
 import dayjs from "dayjs";
 
 const BoardDetail = () => {
+  // URL 경로에 포함된 동적 파라미터를 추출하기 위함입니다. 
   const { id } = useParams();
   const [detailInfo, setDetailInfo] = useState<ListContentsDetail>();
   const [isLoading, setIsLoading] = useState(true);

@@ -20,12 +20,17 @@ const MAIN_TAB: MainTab[] = [
   { title: "혜택", id: "3" },
 ];
 
+// [a, b] = useState   ===  값을 저장하는 변수a, 그 값을 변경해주는 함수b
+
 const Tab = ({ saveList }: Props) => {
   const [selected, setSelected] = useState<TAB>("1");
   // <Category> 는 api.ts 에서 가져오는 것이다.
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategories, setSelectedCategories] = useState("1");
 
+  // useEffect 역할 
+  // 케이스1: [] 만 쓰면 비었을 때 === 최초 1번만 쓰겠다
+  // 케이스2: [abc] dependency 가 있을 때 === dependency 가 바뀔 때마다 실행된다.
   useEffect(() => {
     getCategories(selected);
   }, [selected]);
@@ -43,6 +48,7 @@ const Tab = ({ saveList }: Props) => {
     }
   };
 
+  // tabId는 parameter, TAB은 parameter의 typ
   const selectTab = (tabId: TAB) => {
     setSelected(tabId);
   };

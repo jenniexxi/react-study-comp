@@ -15,7 +15,7 @@ type Props = {
 
 const ListItem = ({ item }: Props) => {
   const [isLike, setIsLike] = useState(false);
-  console.log(item);
+  // console.log(item);
 
   const changeDays = (): string => {
     //기존에 쓰던거 : {dayjs().diff(item.createtime, "hour")} 시간전

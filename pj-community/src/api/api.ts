@@ -18,6 +18,7 @@ export type Category = {
 
 // async (request parammeters 값을 넣어줌)
 // get 방식
+// (): Promise<Category[]> : promise를 쓴 이유는 함수가 리턴해주는 값의 타입을 말함
 export const getCategory = async (tabId: string): Promise<Category[]> => {
   const result = await axiosInstance.get(`/category?tabid=${tabId}`);
   // tabid 는 백엔드 서버와 프론트가 합의한 이름
@@ -42,6 +43,8 @@ export const getList = async (
   category: string,
   tab: string
 ): Promise<List[]> => {
+  // Post는 body 를 통해서 데이터를 전달한다.
+  // get은 주소를 통해서 전달한다.
   const body = { category: category, tab: tab };
 
   const result = await axiosInstance.post(`/list`, body);
