@@ -21,7 +21,7 @@ export const Container = styled.div`
   h1 {
     margin-right: 30px;
     a {
-        display: flex;
+      display: flex;
     }
   }
 `;
@@ -33,10 +33,11 @@ export const Container_login = styled(Container)`
     color: #fff;
     font-weight: bold;
     margin-right: 30px;
-    img {
-        width: 30px;
-        height: 30px;
-    }
+  }
+  img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
   }
 `;
 
@@ -45,12 +46,12 @@ export const Nav = styled.nav`
     display: flex;
     gap: 30px;
     li {
-        a {
-            display: block;
-            font-size: 16px;
-            color: #fff;
-            font-weight: bold;
-        }
+      a {
+        display: block;
+        font-size: 16px;
+        color: #fff;
+        font-weight: bold;
+      }
     }
   }
 `;

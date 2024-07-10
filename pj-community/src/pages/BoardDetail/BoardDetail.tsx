@@ -3,12 +3,14 @@ import * as S from "./BoardDetail.style";
 import { useEffect, useState } from "react";
 import { ListContentsDetail, getDetail } from "@api/api";
 import dayjs from "dayjs";
+import { userInfoStore } from "@stores/userInfoStore";
 
 const BoardDetail = () => {
   // URL 경로에 포함된 동적 파라미터를 추출하기 위함입니다. 
   const { id } = useParams();
   const [detailInfo, setDetailInfo] = useState<ListContentsDetail>();
   const [isLoading, setIsLoading] = useState(true);
+  const { userInfo } = userInfoStore();
 
   useEffect(() => {
     getDetailInfo();
@@ -58,7 +60,8 @@ const BoardDetail = () => {
           <p>
             {detailInfo?.content}<br/>
             paytype: {detailInfo?.paytype}<br/>
-            store: {detailInfo?.store}
+            store: {detailInfo?.store}<br/>
+            유저 id & 이름 : {userInfo?.userid} & {userInfo?.name}
           </p>
         </S.BoardContents>
       </S.BoardContainer>

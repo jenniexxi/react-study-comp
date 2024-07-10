@@ -1,7 +1,27 @@
 import { Link } from "react-router-dom";
 import * as S from "./Header.style";
+import { useEffect } from "react";
+import UserAPI from "@api/User";
+import { userInfoStore } from "@stores/userInfoStore";
 
 function Header() {
+  // const [userInfo, setUserInfo] = useState<userInfo>();
+  const { userInfo, setUserInfoList } = userInfoStore();
+
+  useEffect(() => {
+    getUserInfos();
+  }, []);
+
+  const getUserInfos = async () => {
+    try {
+      const userInfo = await UserAPI.getUserInfo();
+      // setUserInfo(userInfo);
+      setUserInfoList(userInfo);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   return (
     <S.Wrapper>
       <S.Header>
@@ -35,8 +55,8 @@ function Header() {
           </S.Nav>
         </S.Container>
         <S.Container_login>
-          <Link to="/">로그인</Link>
-          <img src="/resources/images/img-user-profile.png" />
+          <Link to="/">{userInfo?.name}</Link>
+          <img src={userInfo?.profileimage} />
         </S.Container_login>
       </S.Header>
     </S.Wrapper>
