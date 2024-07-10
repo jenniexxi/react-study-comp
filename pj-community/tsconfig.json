@@ -31,7 +31,8 @@
       "@resources/*": ["resources/*"],
       "@router/*": ["router/*"],
       "@styles/*": ["styles/*"],
-      "@utils/*": ["utils/*"]
+      "@utils/*": ["utils/*"],
+      "@stores/*": ["stores/*"]
     }
   },
   "include": ["src"],

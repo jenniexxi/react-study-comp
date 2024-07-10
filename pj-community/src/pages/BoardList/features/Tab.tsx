@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import MainTabItem from "./MainTabItem";
 import * as S from "../BoardList.style";
 import { getCategory, Category, getList, List } from "@api/api";
+import { useBoardStore } from "@stores/boardStore";
 
 type TAB = "1" | "2" | "3";
 
@@ -10,9 +11,10 @@ type MainTab = {
   id: TAB;
 };
 
-type Props = {
-  saveList: (list: List[]) => void;
-};
+// zustand 이전방식
+// type Props = {
+//   saveList: (list: List[]) => void;
+// };
 
 const MAIN_TAB: MainTab[] = [
   { title: "인기", id: "1" },
@@ -21,14 +23,16 @@ const MAIN_TAB: MainTab[] = [
 ];
 
 // [a, b] = useState   ===  값을 저장하는 변수a, 그 값을 변경해주는 함수b
-
-const Tab = ({ saveList }: Props) => {
+// zustand 이전방식이고 다행
+// const Tab = ({ saveList }: Props) => {
+const Tab = () => {
   const [selected, setSelected] = useState<TAB>("1");
   // <Category> 는 api.ts 에서 가져오는 것이다.
   const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategories, setSelectedCategories] = useState("1");
+  const { setList } = useBoardStore();
 
-  // useEffect 역할 
+  // useEffect 역할
   // 케이스1: [] 만 쓰면 비었을 때 === 최초 1번만 쓰겠다
   // 케이스2: [abc] dependency 가 있을 때 === dependency 가 바뀔 때마다 실행된다.
   useEffect(() => {
@@ -60,7 +64,9 @@ const Tab = ({ saveList }: Props) => {
   const getLists = async (category: string, tab: string) => {
     try {
       const result = await getList(category, tab);
-      saveList(result);
+      // zustand 이전방식
+      // saveList(result);
+      setList(result);
     } catch (err) {
       console.log("error", err);
     }

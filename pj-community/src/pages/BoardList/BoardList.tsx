@@ -6,16 +6,23 @@ import { List } from "@api/api";
 import Contents from "./features/Contents";
 
 const BoardList = () => {
-  const [list, setList] = useState<List[]>([]);
+  // zustand 이전 방식
+  // const [list, setList] = useState<List[]>([]);
+  
 
-  const saveList = (listData: List[]) => {
-    setList(listData);
-  };
+  // const saveList = (listData: List[]) => {
+  //   setList(listData);
+  // };
 
   return (
     <>
+      <TopArea />
+      <Contents />
+      
+      {/* zustand 이전 방식
       <TopArea saveList={saveList} />
-      <Contents list={list} />
+      <Contents list={list} /> */}
+
       {/* {list.map((item) => (
         <Link to={`/detail/${item.boardid}`}>
           <ListItem item={item} />

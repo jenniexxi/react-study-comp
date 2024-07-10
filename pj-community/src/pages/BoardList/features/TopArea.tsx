@@ -3,16 +3,26 @@ import Tab from "./Tab";
 import * as S from "../BoardList.style";
 import { List } from "@api/api";
 
-type Props = {
-  // 함수
-  saveList: (list: List[]) => void;
-};
+// zustand 이전방식
+// type Props = {
+//   // 함수
+//   saveList: (list: List[]) => void;
+// };
 
-const TopArea = ({ saveList }: Props) => {
+// const TopArea = ({ saveList }: Props) => {
+//   return (
+//     <S.BoardListWrapper>
+//       <Search />
+//       <Tab saveList={saveList} />
+//     </S.BoardListWrapper>
+//   );
+// };
+
+const TopArea = () => {
   return (
     <S.BoardListWrapper>
       <Search />
-      <Tab saveList={saveList} />
+      <Tab />
     </S.BoardListWrapper>
   );
 };
