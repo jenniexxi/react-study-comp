@@ -36,6 +36,7 @@ const Tab = () => {
   // render 되는 곳에서도 categories => data 로 수정 (이름 바꿔서 쓸 수 있음, 아래 설명)
   // data: categories 는 data를 categories 라는 이름으로 쓰겠다
   // 카테고리는 get 방식으로 되어 있어서 react query 사용
+  // queryKey 에서 "category" 는 임의로 지어준 이름이고, selected 를 넣어주겠다.
   const { data: categories } = useQuery({
     queryKey: ["category", selected],
     queryFn: () => getCategory(selected),
