@@ -2,6 +2,9 @@ import * as S from "./BoardWrite.style";
 import InfoAlram from "@resources/svg/infoalram";
 import { IconAdd, ImgBoard1, ImgClose } from "@resources/images";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useState } from "react";
+
+const tags = ["무이자할부", "카드사할인", "쿠폰", "포인트", "통신사"];
 
 type FormData = {
   boardTitle: string;
@@ -12,6 +15,16 @@ type FormData = {
 };
 
 const BoardWrite = () => {
+  const [activeTags, setActiveTags] = useState<string[]>([]);
+
+  const handleTagClick = (tag: string) => {
+    setActiveTags((prevTags) =>
+      prevTags.includes(tag)
+        ? prevTags.filter((t) => t !== tag)
+        : [...prevTags, tag]
+    );
+  };
+
   const {
     register,
     handleSubmit,
@@ -90,11 +103,24 @@ const BoardWrite = () => {
           <S.ContsArea>
             <S.ContsTitle>할인 받은 유형</S.ContsTitle>
             <S.TagItem>
-              <span>무이자할부</span>
+              {/* <span>무이자할부</span>
               <span>카드사할인</span>
               <span>쿠폰</span>
               <span>포인트</span>
-              <span>통신사</span>
+              <span>통신사</span> */}
+              {tags.map((tag) => (
+                <span
+                  key={tag}
+                  onClick={() => handleTagClick(tag)}
+                  style={{
+                    backgroundColor: activeTags.includes(tag)
+                      ? "#d1e7dd"
+                      : "transparent",
+                  }}
+                >
+                  {tag}
+                </span>
+              ))}
             </S.TagItem>
             <S.ContsDesc>
               <S.IconInfo>
