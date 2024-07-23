@@ -1,9 +1,11 @@
 import styled from "styled-components";
 
-export const BoardWriteContainer = styled.form`
+export const BoardWriteContainer = styled.div`
   width: 100%;
   margin: 0 auto;
 `;
+
+export const BoardForm = styled.form``;
 
 export const TopTitleWrapper = styled.div`
   width: 100%;
@@ -215,4 +217,10 @@ export const BeforeCount = styled.span`
 
 export const AfterCount = styled.span`
   color: ${({ theme }) => theme.lightversion.fontSecondary};
+`;
+
+export const MsgError = styled.p`
+  color: ${({ theme }) => theme.lightversion.error};
+  font-size: 11px;
+  margin: 8px 0 0 5px;
 `;

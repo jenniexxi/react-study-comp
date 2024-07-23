@@ -38,6 +38,7 @@ const lightversion = {
   fontPrimary: "#202434",
   fontSecondary: "#7e8292",
   primary: "#3383fd",
+  error: "#fd3333",
 //   secondary: "#ddd",
 //   hover: "#00a0ff50",
 };
