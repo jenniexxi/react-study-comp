@@ -182,3 +182,11 @@ export const TypeFinance = styled(CategoryType)`
   background-color: #e6f9f1;
   color: #11a064;
 `;
+
+export const FloatContainerLink = styled(Link)`
+  position: fixed;
+  bottom: 20px;
+  right: 50%;
+  transform: translateX(400%);
+  cursor: pointer;
+`;

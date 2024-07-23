@@ -57,3 +57,28 @@ export const LoadingBox = styled.div`
   z-index: 100;
   padding-top: 100px;
 `;
+
+export const BtnBox = styled.div`
+  text-align: right;
+  margin-bottom: 12px;
+  button {
+    width: 52px;
+    height: 30px;
+    line-height: 27px;
+    border-radius: 15px;
+    cursor: pointer;
+  }
+`;
+
+export const BtnUpdate = styled.button`
+  border: 1px solid ${({ theme }) => theme.lightversion.primary};
+  background-color: ${({ theme }) => theme.lightversion.background};
+  margin-right: 3px;
+  color: ${({ theme }) => theme.lightversion.fontPrimary};
+`;
+
+export const BtnDelete = styled.button`
+  border: 1px solid ${({ theme }) => theme.lightversion.background};
+  background-color: ${({ theme }) => theme.lightversion.primary};
+  color: ${({ theme }) => theme.lightversion.background};
+`;

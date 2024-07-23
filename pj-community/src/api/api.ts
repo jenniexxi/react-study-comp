@@ -86,6 +86,7 @@ export type ListContentsDetail = {
   createtime: string;
   paytype: string;
   store: string;
+  userseq: string;
 };
 
 export const getDetail = async (
@@ -94,4 +95,8 @@ export const getDetail = async (
   const result = await axiosInstance.get(`/detail?boardid=${boardid}`);
 
   return result.data;
+};
+
+export const deleteDetail = async (boardid: string): Promise<void> => {
+  await axiosInstance.delete(`/deleteBoard?boardid=${boardid}`);
 };

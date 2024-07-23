@@ -1,16 +1,17 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import * as S from "./BoardDetail.style";
 import { useEffect, useState } from "react";
-import { ListContentsDetail, getDetail } from "@api/api";
+import { ListContentsDetail, deleteDetail, getDetail } from "@api/api";
 import dayjs from "dayjs";
 import { userInfoStore } from "@stores/userInfoStore";
 
 const BoardDetail = () => {
-  // URL 경로에 포함된 동적 파라미터를 추출하기 위함입니다. 
+  // URL 경로에 포함된 동적 파라미터를 추출하기 위함입니다.
   const { id } = useParams();
   const [detailInfo, setDetailInfo] = useState<ListContentsDetail>();
   const [isLoading, setIsLoading] = useState(true);
   const { userInfo } = userInfoStore();
+  const navigate = useNavigate();
 
   useEffect(() => {
     getDetailInfo();
@@ -25,6 +26,20 @@ const BoardDetail = () => {
       setDetailInfo(result);
     } catch (e) {
       console.log("error", e);
+    }
+  };
+
+  const handleDeleteDetail = async () => {
+    if (!id) return;
+
+    if (window.confirm("게시글을 삭제하시겠습니까?")) {
+      try {
+        await deleteDetail(id);
+        alert("삭제되었습니다.");
+        navigate("/");
+      } catch (e) {
+        console.error("삭제 중 오류가 발생했습니다.", e);
+      }
     }
   };
 
@@ -50,17 +65,27 @@ const BoardDetail = () => {
               <img src="../public/resources/images/img_badge_battery.png" />
             </S.InfoTop>
             <S.InfoBottom>
-              <span>{dayjs(detailInfo?.createtime).format("YYYY.MM.DD a hh:mm")}</span>
+              <span>
+                {dayjs(detailInfo?.createtime).format("YYYY.MM.DD a hh:mm")}
+              </span>
               <span>조회수 {detailInfo?.viewer}</span>
             </S.InfoBottom>
           </S.InfoBox>
         </S.BoardInfo>
+        {detailInfo?.userseq === userInfo?.userid && (
+          <S.BtnBox>
+            <S.BtnUpdate>수정</S.BtnUpdate><S.BtnDelete onClick={handleDeleteDetail}>삭제</S.BtnDelete>
+          </S.BtnBox>
+        )}
         <S.BoardContents>
           <S.Title>{detailInfo?.title}</S.Title>
           <p>
-            {detailInfo?.content}<br/>
-            paytype: {detailInfo?.paytype}<br/>
-            store: {detailInfo?.store}<br/>
+            {detailInfo?.content}
+            <br />
+            paytype: {detailInfo?.paytype}
+            <br />
+            store: {detailInfo?.store}
+            <br />
             유저 id & 이름 : {userInfo?.userid} & {userInfo?.name}
           </p>
         </S.BoardContents>

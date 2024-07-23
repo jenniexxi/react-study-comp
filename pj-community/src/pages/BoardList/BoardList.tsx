@@ -15,7 +15,7 @@ const BoardList = () => {
   // };
 
   return (
-    <>
+    <div>
       <TopArea />
       <Contents />
       
@@ -28,7 +28,7 @@ const BoardList = () => {
           <ListItem item={item} />
         </Link>
       ))} */}
-    </>
+    </div>
   );
 };
 
