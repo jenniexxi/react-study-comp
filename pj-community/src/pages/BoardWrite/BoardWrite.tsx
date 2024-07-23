@@ -3,6 +3,8 @@ import InfoAlram from "@resources/svg/infoalram";
 import { IconAdd, ImgBoard1, ImgClose } from "@resources/images";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
+import WriteAPI from "@api/Write";
+import { useNavigate } from "react-router-dom";
 
 const tags = ["무이자할부", "카드사할인", "쿠폰", "포인트", "통신사"];
 
@@ -16,14 +18,7 @@ type FormData = {
 
 const BoardWrite = () => {
   const [activeTags, setActiveTags] = useState<string[]>([]);
-
-  const handleTagClick = (tag: string) => {
-    setActiveTags((prevTags) =>
-      prevTags.includes(tag)
-        ? prevTags.filter((t) => t !== tag)
-        : [...prevTags, tag]
-    );
-  };
+  const navigate = useNavigate();
 
   const {
     register,
@@ -32,8 +27,32 @@ const BoardWrite = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const onSubmit: SubmitHandler<FormData> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    console.log(data.boardTitle);
+
+    const result = await WriteAPI.sendWrite(
+      data.boardTitle,
+      data.TextareaTitle,
+      data.selectTitle1,
+      data.placeTitle,
+      "1",
+      data.selectTitle2,
+      "1"
+    );
+    
+    if (result) {
+      navigate("/");
+    } else {
+      alert("글쓰기 실패");
+    }
+  };
+
+  const handleTagClick = (tag: string) => {
+    setActiveTags((prevTags) =>
+      prevTags.includes(tag)
+        ? prevTags.filter((t) => t !== tag)
+        : [...prevTags, tag]
+    );
   };
 
   return (
