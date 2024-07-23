@@ -1,36 +1,31 @@
 import * as S from "./BoardWrite.style";
 import InfoAlram from "@resources/svg/infoalram";
 import { IconAdd, ImgBoard1, ImgClose } from "@resources/images";
-import { ChangeEvent, FormEvent, useState, useRef } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
+
+type FormData = {
+  boardTitle: string;
+  placeTitle: string;
+  selectTitle1: string;
+  selectTitle2: string;
+  TextareaTitle: string;
+};
 
 const BoardWrite = () => {
-  const [title, setTitle] = useState("");
-  const [place, setPlace] = useState("");
-  const [isSubmit, setIsSubmit] = useState(false);
-  const titleInputRef = useRef<HTMLInputElement>(null);
+  const {
+    register,
+    handleSubmit,
+    // watch,
+    formState: { errors },
+  } = useForm<FormData>();
 
-  const changeTitle = (event: ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.currentTarget.value);
-  };
-
-  const submitForm = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("title:", title, "place:", place);
-
-    if (!title) {
-      setIsSubmit(true);
-      titleInputRef.current?.focus();
-      return;
-    }
-  };
-
-  const changePlace = (event: ChangeEvent<HTMLInputElement>) => {
-    setPlace(event.currentTarget.value);
+  const onSubmit: SubmitHandler<FormData> = (data) => {
+    console.log(data);
   };
 
   return (
     <S.BoardWriteContainer>
-      <S.BoardForm action="" onSubmit={submitForm}>
+      <S.BoardForm action="" onSubmit={handleSubmit(onSubmit)}>
         <S.TopTitleWrapper>
           <S.TopTitleArea>
             <S.BoardCategory>커뮤니티 &gt; 꿀팁자랑</S.BoardCategory>
@@ -45,14 +40,19 @@ const BoardWrite = () => {
             <S.ContsTitle>게시글 제목</S.ContsTitle>
             <div>
               <input
-                onChange={changeTitle}
+                {...register("boardTitle", {
+                  minLength: {
+                    value: 4,
+                    message: "4자이상 입력해주세요",
+                  },
+                  required: "제목은 필수 값입니다.",
+                })}
                 type="text"
                 placeholder="브랜드와 제품명을 적어주세요"
-                ref={titleInputRef}
               />
             </div>
-            {isSubmit && !title &&  (
-              <S.MsgError>게시글 제목을 입력해주세요.</S.MsgError>
+            {errors.boardTitle && (
+              <S.MsgError>{errors.boardTitle.message}</S.MsgError>
             )}
           </S.ContsArea>
           <S.ContsArea>
@@ -60,21 +60,23 @@ const BoardWrite = () => {
             <S.ContsBox>
               <S.itemBoxLeft>
                 <input
-                  onChange={changePlace}
                   type="text"
+                  {...register("placeTitle", {
+                    required: "제목은 필수 값입니다.",
+                  })}
                   placeholder="예시) 쿠팡"
                 />
               </S.itemBoxLeft>
               <S.itemBoxRight>
-                <select name="" id="">
-                  <option value="">결제할인 수단1</option>
-                  <option value="">결제할인 수단2</option>
-                  <option value="">결제할인 수단3</option>
+                <select id="" {...register("selectTitle1")}>
+                  <option value="1">결제할인 수단1</option>
+                  <option value="2">결제할인 수단2</option>
+                  <option value="3">결제할인 수단3</option>
                 </select>
-                <select name="" id="">
-                  <option value="">총 할인율 0%</option>
-                  <option value="">총 할인율 10%</option>
-                  <option value="">총 할인율 20%</option>
+                <select id="" {...register("selectTitle2")}>
+                  <option value="1">총 할인율 0%</option>
+                  <option value="2">총 할인율 10%</option>
+                  <option value="3">총 할인율 20%</option>
                 </select>
               </S.itemBoxRight>
             </S.ContsBox>
@@ -105,6 +107,7 @@ const BoardWrite = () => {
             <S.ContsTitle>자세한 설명</S.ContsTitle>
             <S.TextAreaBox>
               <S.ContsTextArea
+                {...register("TextareaTitle")}
                 name=""
                 id=""
                 placeholder="윰탱구리님, 어떤 혜택을 받으셨나요?"
