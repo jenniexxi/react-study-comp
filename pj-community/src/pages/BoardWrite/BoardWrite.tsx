@@ -5,6 +5,7 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { useState } from "react";
 import WriteAPI from "@api/Write";
 import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 
 const tags = ["무이자할부", "카드사할인", "쿠폰", "포인트", "통신사"];
 
@@ -27,24 +28,31 @@ const BoardWrite = () => {
     formState: { errors },
   } = useForm<FormData>();
 
-  const onSubmit: SubmitHandler<FormData> = async (data) => {
-    console.log(data.boardTitle);
-
-    const result = await WriteAPI.sendWrite(
-      data.boardTitle,
-      data.TextareaTitle,
-      data.selectTitle1,
-      data.placeTitle,
-      "1",
-      data.selectTitle2,
-      "1"
-    );
-    
-    if (result) {
+  // mutation 사용
+  const mutation = useMutation({
+    mutationFn: (data: FormData) =>
+      WriteAPI.sendWrite(
+        data.boardTitle,
+        data.TextareaTitle,
+        data.selectTitle1,
+        data.placeTitle,
+        "1",
+        data.selectTitle2,
+        "1"
+      ),
+    onSuccess: () => {
       navigate("/");
-    } else {
+    },
+    onError: () => {
       alert("글쓰기 실패");
-    }
+    },
+  });
+
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    //react hook form
+    // data 를 가지고 데이터를 받기까지 등록하고, 그걸 다 거친 데이터를 react hook form이 준거다.
+    // post 쓴글을 서버에 저장 =>
+    mutation.mutate(data);
   };
 
   const handleTagClick = (tag: string) => {
