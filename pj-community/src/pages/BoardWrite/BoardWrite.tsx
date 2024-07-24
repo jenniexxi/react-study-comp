@@ -85,7 +85,17 @@ const BoardWrite = () => {
                     value: 4,
                     message: "4자이상 입력해주세요",
                   },
-                  required: "제목은 필수 값입니다.",
+                  required: { value: true, message: "제목은 필수 값입니다." },
+                  maxLength: {
+                    value: 20,
+                    message: "20자 이내로 입력하세요",
+                  },
+                  // pattern: {
+                  //   value: RegExp(
+                  //     "^[a-zA-Z0-9+-_.]+@[a-zA-Z0-9-]+.[a-zA-Z0-9-.]+$"
+                  //   ),
+                  //   message: "이메일 형식이 아닙니다.",
+                  // },
                 })}
                 type="text"
                 placeholder="브랜드와 제품명을 적어주세요"
