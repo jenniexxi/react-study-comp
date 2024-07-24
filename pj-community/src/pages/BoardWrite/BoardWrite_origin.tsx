@@ -2,18 +2,26 @@ import * as S from "./BoardWrite.style";
 import InfoAlram from "@resources/svg/infoalram";
 import { IconAdd, ImgBoard1, ImgClose } from "@resources/images";
 import { ChangeEvent, FormEvent, useState, useRef } from "react";
+import WriteAPI from "@api/Write";
+import { useNavigate } from "react-router-dom";
 
 const BoardWrite = () => {
   const [title, setTitle] = useState("");
+  const [textArea, settextArea] = useState("");
   const [place, setPlace] = useState("");
   const [isSubmit, setIsSubmit] = useState(false);
   const titleInputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
 
   const changeTitle = (event: ChangeEvent<HTMLInputElement>) => {
     setTitle(event.currentTarget.value);
   };
 
-  const submitForm = (e: FormEvent<HTMLFormElement>) => {
+  const changeTextArea = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    settextArea(event.currentTarget.value);
+  };
+
+  const submitForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("title:", title, "place:", place);
 
@@ -21,6 +29,18 @@ const BoardWrite = () => {
       setIsSubmit(true);
       titleInputRef.current?.focus();
       return;
+    }
+
+    try {
+      const getapi = await WriteAPI.sendWrite(
+        title, textArea, '1', place, '1', '1', '1'
+      )
+      if (getapi) {
+        alert("새 글 등록 성공");
+        navigate('/');
+      }
+    } catch (e) {
+      console.log("error", e);
     }
   };
 
@@ -108,6 +128,7 @@ const BoardWrite = () => {
                 name=""
                 id=""
                 placeholder="윰탱구리님, 어떤 혜택을 받으셨나요?"
+                onChange={changeTextArea}
               ></S.ContsTextArea>
               <S.CountBox>
                 <S.BeforeText>0</S.BeforeText>
