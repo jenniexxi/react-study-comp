@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { ListContentsDetail, deleteDetail, getDetail } from "@api/api";
 import dayjs from "dayjs";
 import { userInfoStore } from "@stores/userInfoStore";
+import { useMutation } from "@tanstack/react-query";
 
 const BoardDetail = () => {
   // URL 경로에 포함된 동적 파라미터를 추출하기 위함입니다.
@@ -29,17 +30,23 @@ const BoardDetail = () => {
     }
   };
 
+  // mutation 사용
+  const mutation = useMutation({
+    mutationFn: (id: string) => deleteDetail(id),
+    onSuccess: () => {
+      alert("삭제되었습니다.");
+      navigate("/");
+    },
+    onError: () => {
+      alert("글 삭제 실패!!!");
+    },
+  });
+
   const handleDeleteDetail = async () => {
     if (!id) return;
 
     if (window.confirm("게시글을 삭제하시겠습니까?")) {
-      try {
-        await deleteDetail(id);
-        alert("삭제되었습니다.");
-        navigate("/");
-      } catch (e) {
-        console.error("삭제 중 오류가 발생했습니다.", e);
-      }
+      mutation.mutate(id);
     }
   };
 
@@ -74,7 +81,8 @@ const BoardDetail = () => {
         </S.BoardInfo>
         {detailInfo?.userseq === userInfo?.userid && (
           <S.BtnBox>
-            <S.BtnUpdate>수정</S.BtnUpdate><S.BtnDelete onClick={handleDeleteDetail}>삭제</S.BtnDelete>
+            <S.BtnUpdate>수정</S.BtnUpdate>
+            <S.BtnDelete onClick={handleDeleteDetail}>삭제</S.BtnDelete>
           </S.BtnBox>
         )}
         <S.BoardContents>
