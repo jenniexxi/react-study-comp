@@ -112,10 +112,13 @@ const BoardWrite = () => {
                 <input
                   type="text"
                   {...register("placeTitle", {
-                    required: "제목은 필수 값입니다.",
+                    required: "구매처(1,2,3)는 필수 값입니다.",
                   })}
                   placeholder="예시) 쿠팡"
                 />
+                {errors.placeTitle && (
+                  <S.MsgError>{errors.placeTitle.message}</S.MsgError>
+                )}
               </S.itemBoxLeft>
               <S.itemBoxRight>
                 <select id="" {...register("selectTitle1")}>
