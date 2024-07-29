@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const BoardContainer = styled.div`
@@ -61,16 +62,18 @@ export const LoadingBox = styled.div`
 export const BtnBox = styled.div`
   text-align: right;
   margin-bottom: 12px;
-  button {
+  a, button {
+    display: inline-block;
     width: 52px;
     height: 30px;
-    line-height: 27px;
+    line-height: 30px;
     border-radius: 15px;
     cursor: pointer;
+    text-align: center;
   }
 `;
 
-export const BtnUpdate = styled.button`
+export const BtnUpdate = styled(Link)`
   border: 1px solid ${({ theme }) => theme.lightversion.primary};
   background-color: ${({ theme }) => theme.lightversion.background};
   margin-right: 3px;

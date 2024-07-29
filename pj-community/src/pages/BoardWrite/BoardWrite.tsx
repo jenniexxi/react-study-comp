@@ -2,9 +2,9 @@ import * as S from "./BoardWrite.style";
 import InfoAlram from "@resources/svg/infoalram";
 import { IconAdd, ImgBoard1, ImgClose } from "@resources/images";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import WriteAPI from "@api/Write";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 
 const tags = ["무이자할부", "카드사할인", "쿠폰", "포인트", "통신사"];
@@ -20,18 +20,26 @@ type FormData = {
 const BoardWrite = () => {
   const [activeTags, setActiveTags] = useState<string[]>([]);
   const navigate = useNavigate();
+  const location = useLocation();
+  const [uiForm, setUiForm] = useState(false);
+
+  useEffect(() => {
+    checkUrl();
+  }, []);
 
   const {
     register,
     handleSubmit,
     // watch,
+    setValue,
     formState: { errors },
   } = useForm<FormData>();
 
   // mutation 사용
   const mutation = useMutation({
-    mutationFn: (data: FormData) =>
-      WriteAPI.sendWrite(
+    mutationFn: (data: FormData) => {
+      console.log(data);
+      return WriteAPI.sendWrite(
         data.boardTitle,
         data.TextareaTitle,
         data.selectTitle1,
@@ -39,7 +47,8 @@ const BoardWrite = () => {
         "1",
         data.selectTitle2,
         "1"
-      ),
+      );
+    },
     onSuccess: () => {
       navigate("/");
     },
@@ -48,11 +57,38 @@ const BoardWrite = () => {
     },
   });
 
+  // 수정 mutation
+  const mutationModify = useMutation({
+    mutationFn: (data: FormData) => {
+      return WriteAPI.sendWriteModify(
+        location.state?.detailInfo.boardid,
+        data.boardTitle,
+        data.TextareaTitle,
+        data.selectTitle1,
+        data.placeTitle,
+        "1",
+        data.selectTitle2,
+        "1"
+      );
+    },
+    onSuccess: () => {
+      navigate("/");
+    },
+    onError: () => {
+      alert("수정 실패");
+    },
+  });
+
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     //react hook form
     // data 를 가지고 데이터를 받기까지 등록하고, 그걸 다 거친 데이터를 react hook form이 준거다.
     // post 쓴글을 서버에 저장 =>
-    mutation.mutate(data);
+    if (uiForm) {
+      console.log(data);
+      mutationModify.mutate(data);
+    } else {
+      mutation.mutate(data);
+    }
   };
 
   const handleTagClick = (tag: string) => {
@@ -61,6 +97,20 @@ const BoardWrite = () => {
         ? prevTags.filter((t) => t !== tag)
         : [...prevTags, tag]
     );
+  };
+
+  const checkUrl = () => {
+    if (location.pathname === "/modify") {
+      setUiForm(true);
+      setValue("boardTitle", location?.state?.detailInfo.title);
+      setValue("placeTitle", location?.state?.detailInfo.store);
+      setValue("selectTitle1", "1");
+      setValue("selectTitle2", "1");
+      setValue("TextareaTitle", location?.state?.detailInfo.content);
+    } else {
+      setUiForm(false);
+      console.log("write");
+    }
   };
 
   return (
@@ -174,8 +224,6 @@ const BoardWrite = () => {
             <S.TextAreaBox>
               <S.ContsTextArea
                 {...register("TextareaTitle")}
-                name=""
-                id=""
                 placeholder="윰탱구리님, 어떤 혜택을 받으셨나요?"
               ></S.ContsTextArea>
               <S.CountBox>

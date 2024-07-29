@@ -81,14 +81,14 @@ const BoardDetail = () => {
         </S.BoardInfo>
         {detailInfo?.userseq === userInfo?.userid && (
           <S.BtnBox>
-            <S.BtnUpdate>수정</S.BtnUpdate>
+            <S.BtnUpdate to={`/modify`} state={{detailInfo}}>수정</S.BtnUpdate>
             <S.BtnDelete onClick={handleDeleteDetail}>삭제</S.BtnDelete>
           </S.BtnBox>
         )}
         <S.BoardContents>
           <S.Title>{detailInfo?.title}</S.Title>
           <p>
-            {detailInfo?.content}
+            내용 : {detailInfo?.content}
             <br />
             paytype: {detailInfo?.paytype}
             <br />
