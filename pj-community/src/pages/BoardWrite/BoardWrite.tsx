@@ -2,7 +2,7 @@ import * as S from "./BoardWrite.style";
 import InfoAlram from "@resources/svg/infoalram";
 import { IconAdd, ImgBoard1, ImgClose } from "@resources/images";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import WriteAPI from "@api/Write";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
@@ -21,7 +21,7 @@ const BoardWrite = () => {
   const [activeTags, setActiveTags] = useState<string[]>([]);
   const navigate = useNavigate();
   const location = useLocation();
-  const [uiForm, setUiForm] = useState(false);
+  const isModifiMode = useRef(false);
 
   useEffect(() => {
     checkUrl();
@@ -83,10 +83,11 @@ const BoardWrite = () => {
     //react hook form
     // data 를 가지고 데이터를 받기까지 등록하고, 그걸 다 거친 데이터를 react hook form이 준거다.
     // post 쓴글을 서버에 저장 =>
-    if (uiForm) {
-      console.log(data);
+    if (isModifiMode.current) {
+      // console.log("modify");
       mutationModify.mutate(data);
     } else {
+      // console.log("write");
       mutation.mutate(data);
     }
   };
@@ -101,15 +102,12 @@ const BoardWrite = () => {
 
   const checkUrl = () => {
     if (location.pathname === "/modify") {
-      setUiForm(true);
+      isModifiMode.current = true;
       setValue("boardTitle", location?.state?.detailInfo.title);
       setValue("placeTitle", location?.state?.detailInfo.store);
       setValue("selectTitle1", "1");
       setValue("selectTitle2", "1");
       setValue("TextareaTitle", location?.state?.detailInfo.content);
-    } else {
-      setUiForm(false);
-      console.log("write");
     }
   };
 
