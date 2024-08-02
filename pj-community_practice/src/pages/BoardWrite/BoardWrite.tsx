@@ -5,7 +5,7 @@ import { IconAdd, ImgBoard1, ImgClose } from "@resources/images";
 const BoardWrite = () => {
   return (
     <S.BoardWriteContainer>
-      <S.BoardForm action="" onSubmit={}>
+      <S.BoardForm action="">
         <S.TopTitleWrapper>
           <S.TopTitleArea>
             <S.BoardCategory>커뮤니티 &gt; 꿀팁자랑</S.BoardCategory>

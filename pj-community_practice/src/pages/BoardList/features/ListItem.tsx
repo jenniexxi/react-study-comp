@@ -13,7 +13,7 @@ const ListItem = () => {
   return (
     <S.ListContainer>
       <S.ListItemContainer>
-        <S.ListItemLink to={`/detail/${item.boardid}`}>
+        <S.ListItemLink to="">
           <S.LeftListBox>
             <S.UserInfo>
               <i>
@@ -24,14 +24,14 @@ const ListItem = () => {
             </S.UserInfo>
             <S.ListConts>
               <h3>타이틀</h3>
-              <EllipsisText line={2} text={item.content} />
+              {/* <EllipsisText line={2} /> */}
               {/* <p>{item.content}</p> */}
               {/* <p>{item.content > 2 ? ${item.content} : ${item.content}...}</p> */}
             </S.ListConts>
             <S.Reaction>
               <S.BoxItem>
-                <S.IconBox />
-                  <HeartIcon />
+                <S.IconBox>
+                  <HeartIcon color="" />
                 </S.IconBox>
                 <S.Text>100%</S.Text>
               </S.BoxItem>

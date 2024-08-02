@@ -14,12 +14,18 @@ function Header() {
 
   const getUserInfos = async () => {
     try {
-      const userInfo = await UserAPI.getUserInfo();
-      // setUserInfo(userInfo);
-      setUserInfoList(userInfo);
+      const fetchedUserInfo = await UserAPI.getUserInfo();
+      setUserInfoList(fetchedUserInfo);
     } catch (e) {
       console.log(e);
     }
+    // UserAPI.getUserInfo()
+    //   .then((userInfo) => {
+    //     setUserInfo(userInfo);
+    //   })
+    //   .catch((e) => {
+    //     console.log(e);
+    //   });
   };
 
   return (
@@ -28,7 +34,7 @@ function Header() {
         <S.Container>
           <h1>
             <Link to="/">
-              <img src="/resources/images/img-logo.png" />
+              <img src="/resources/images/img-logo.png" alt="Logo" />
             </Link>
           </h1>
           <S.Nav>
@@ -55,8 +61,16 @@ function Header() {
           </S.Nav>
         </S.Container>
         <S.Container_login>
-          <Link to="/">{userInfo?.name}</Link>
-          <img src={userInfo?.profileimage} />
+          {userInfo ? (
+            <>
+              <Link to="/">{userInfo.name}</Link>
+              {userInfo.profileimage && (
+                <img src={userInfo.profileimage} alt="Profile" />
+              )}
+            </>
+          ) : (
+            <Link to="/login">로그인</Link>
+          )}
         </S.Container_login>
       </S.Header>
     </S.Wrapper>
