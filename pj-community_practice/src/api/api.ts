@@ -16,6 +16,6 @@ export type Category = {
 }
 
 export const getCategory = async (tabId: string): Promise<Category[]> => {
-  const result = await axiosInstance.get(`/category?tabid={tabId}`);
+  const result = await axiosInstance.get(`/category?tabid=${tabId}`);
   return result.data;
 }
