@@ -125,7 +125,7 @@ const Tab = () => {
                   selectCategory(item.categorycd);
                 }}
               >
-                {item.cateogrynm}
+                {item.categorynm}
               </S.CategoryTab>
             ))}
           </S.CategoryWrapperIn>

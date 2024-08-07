@@ -13,7 +13,7 @@ export const axiosInstance = axios.create({
 // response 값의 형태
 export type Category = {
   categorycd: string;
-  cateogrynm: string;
+  categorynm: string;
 };
 
 // async (request parammeters 값을 넣어줌)
