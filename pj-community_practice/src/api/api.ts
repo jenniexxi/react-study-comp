@@ -13,9 +13,31 @@ export const axiosInstance = axios.create({
 export type Category = {
   categorycd: string;
   categorynm: string;
-}
+};
 
 export const getCategory = async (tabId: string): Promise<Category[]> => {
   const result = await axiosInstance.get(`/category?tabid=${tabId}`);
   return result.data;
-}
+};
+
+export type List = {
+  boardid: string;
+  title: string;
+  content: string;
+  name: string;
+  profileimage: string;
+  like: string;
+  viewer: string;
+  type: string;
+  createtime: string;
+};
+
+export const getList = async (
+  category: string,
+  tab: string
+): Promise<List[]> => {
+  const body = { category: category, tab: tab };
+
+  const result = await axiosInstance.post(`/list`, body);
+  return result.data;
+};

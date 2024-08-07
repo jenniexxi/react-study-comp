@@ -18,11 +18,15 @@ import { List } from "@api/api";
 //   );
 // };
 
-const TopArea = () => {
+type Props = {
+  saveList: (item: List[]) => void;
+};
+
+const TopArea = ({ saveList }: Props) => {
   return (
     <S.BoardListWrapper>
       <Search />
-      <Tab />
+      <Tab saveList={saveList} />
     </S.BoardListWrapper>
   );
 };

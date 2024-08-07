@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import MainTabItem from "./MainTabItem";
 import * as S from "../BoardList.style";
-import { Category, getCategory } from "@api/api";
+import { Category, getCategory, getList, List } from "@api/api";
 
 type TAB = "1" | "2" | "3";
 
@@ -16,10 +16,22 @@ const MAIN_TAB: MainTab[] = [
   { title: "혜택", id: "3" },
 ];
 
-const Tab = () => {
+type Props = {
+  saveList: (item: List[]) => void;
+}
+
+const Tab = ({saveList}: Props) => {
   const [selected, setSelected] = useState<TAB>("1");
   const [selectedCategories, setSelectedCategories] = useState("1");
   const [categories, setCategories] = useState<Category[]>([]);
+
+  useEffect(() => {
+    getLists(selected, selectedCategories);
+  }, [selected, selectedCategories])
+
+  useEffect(() => {
+    getCategories(selected);
+  }, [selected]);
 
   const selectTab = (tabId: TAB) => {
     setSelected(tabId);
@@ -28,10 +40,6 @@ const Tab = () => {
   const selectCategory = (categorycd: string) => {
     setSelectedCategories(categorycd);
   };
-
-  useEffect(() => {
-    getCategories(selected);
-  }, [selected]);
 
   const getCategories = async (tabId: string) => {
     try {
@@ -42,6 +50,15 @@ const Tab = () => {
       console.log("error", e);
     }
   };
+
+  const getLists = async (category: string, tab: string) => {
+    try {
+      const result = await getList(category, tab);
+      saveList(result);
+    } catch (e) {
+      console.log("error", e);
+    }
+  }
 
   return (
     <S.MainTabList>
@@ -77,7 +94,7 @@ const Tab = () => {
         <S.CategoryWrapper>
           <S.CategoryWrapperIn>
             {categories?.map((item) => {
-              console.log(item);
+              console.log(item)
               return (
                 <S.CategoryTab
                   key={item.categorycd}

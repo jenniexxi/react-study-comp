@@ -9,31 +9,55 @@ import { List } from "@api/api";
 import EllipsisText from "@components/EllipsisText";
 // import { Link } from "react-router-dom";
 
-const ListItem = () => {
+type Props = {
+  item: List;
+};
+
+const ListItem = ({ item }: Props) => {
+  const [isLike, setIsLike] = useState(false);
+
+  const changeDays = (): string => {
+    const diffTimeHours = dayjs().diff(item.createtime, "hour");
+    const diffTimeMonths = dayjs().diff(item.createtime, "month");
+
+    if (diffTimeMonths >= 1) {
+      return `${diffTimeMonths}달 전`;
+    } else if (diffTimeHours >= 24) {
+      return `${Math.floor(diffTimeHours / 24)}일 전`;
+    } else {
+      return `${diffTimeHours}시간 전`;
+    }
+  };
+
   return (
     <S.ListContainer>
       <S.ListItemContainer>
-        <S.ListItemLink to="">
+        <S.ListItemLink to={`/detail/${item.boardid}`}>
           <S.LeftListBox>
             <S.UserInfo>
               <i>
-                <img src=""/>
+                <img src={item.profileimage} />
               </i>
-              <span>name 이름</span>
+              <span>{item.name}</span>
               <img src="../public/resources/images/img_badge_battery.png" />
             </S.UserInfo>
             <S.ListConts>
-              <h3>타이틀</h3>
-              {/* <EllipsisText line={2} /> */}
+              <h3>{item.title}</h3>
+              <EllipsisText line={2} text={item.content} />
               {/* <p>{item.content}</p> */}
               {/* <p>{item.content > 2 ? ${item.content} : ${item.content}...}</p> */}
             </S.ListConts>
             <S.Reaction>
               <S.BoxItem>
-                <S.IconBox>
-                  <HeartIcon color="" />
+                <S.IconBox
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsLike(!isLike);
+                  }}
+                >
+                  <HeartIcon color={isLike ? "#ff0000" : "#DADFE8"} />
                 </S.IconBox>
-                <S.Text>100%</S.Text>
+                <S.Text>{item.like}</S.Text>
               </S.BoxItem>
               <S.BoxItem>
                 <S.IconBox style={{}}>
@@ -45,16 +69,16 @@ const ListItem = () => {
                 <S.IconBox className="IconBox">
                   <ViewIcon />
                 </S.IconBox>
-                <S.Text>뷰어 viewer</S.Text>
+                <S.Text>{item.viewer}</S.Text>
               </S.BoxItem>
             </S.Reaction>
           </S.LeftListBox>
           <S.RightListBox>
-            <S.PostTime></S.PostTime>
+            <S.PostTime>{changeDays()}</S.PostTime>
             <S.ImgConts src="../public/resources/images/img_conts.png" />
             <S.Category>
               <S.TypeFinance>
-                꿀팀 자랑, 재테크소통
+                {item.type === "1" ? "꿀팁자랑" : "재테크소통"}
               </S.TypeFinance>
             </S.Category>
           </S.RightListBox>
