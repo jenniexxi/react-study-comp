@@ -1,7 +1,7 @@
 import Search from "./Search";
 import Tab from "./Tab";
 import * as S from "../BoardList.style";
-import { List } from "@api/api";
+// import { List } from "@api/api";
 
 // zustand 이전방식
 // type Props = {
@@ -18,15 +18,15 @@ import { List } from "@api/api";
 //   );
 // };
 
-type Props = {
-  saveList: (item: List[]) => void;
-};
+// type Props = {
+//   saveList: (item: List[]) => void;
+// };
 
-const TopArea = ({ saveList }: Props) => {
+const TopArea = () => {
   return (
     <S.BoardListWrapper>
       <Search />
-      <Tab saveList={saveList} />
+      <Tab />
     </S.BoardListWrapper>
   );
 };

@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import MainTabItem from "./MainTabItem";
 import * as S from "../BoardList.style";
-import { Category, getCategory, getList, List } from "@api/api";
+import { getCategory, getList } from "@api/api";
+import { useBoardStore } from "@stores/boardStore";
+import { useQuery } from "@tanstack/react-query";
 
 type TAB = "1" | "2" | "3";
 
@@ -16,22 +18,39 @@ const MAIN_TAB: MainTab[] = [
   { title: "혜택", id: "3" },
 ];
 
-type Props = {
-  saveList: (item: List[]) => void;
-}
+// type Props = {
+//   saveList: (item: List[]) => void;
+// }
 
-const Tab = ({saveList}: Props) => {
+const Tab = () => {
   const [selected, setSelected] = useState<TAB>("1");
   const [selectedCategories, setSelectedCategories] = useState("1");
-  const [categories, setCategories] = useState<Category[]>([]);
+  // const [categories, setCategories] = useState<Category[]>([]);
+  const { setList } = useBoardStore();
+
+  const { data: categories } = useQuery({
+    queryKey: ["category", selected],
+    queryFn: () => getCategory(selected),
+  });
+
+  const { data: boardlists } = useQuery({
+    queryKey: ["boardlist", selectedCategories, selected],
+    queryFn: () => getList(selectedCategories, selected),
+  });
 
   useEffect(() => {
-    getLists(selected, selectedCategories);
-  }, [selected, selectedCategories])
+    if (boardlists && boardlists?.length > 0) {
+      setList(boardlists);
+    }
+  }, [boardlists]);
 
-  useEffect(() => {
-    getCategories(selected);
-  }, [selected]);
+  // useEffect(() => {
+  //   getLists(selected, selectedCategories);
+  // }, [selected, selectedCategories])
+
+  // useEffect(() => {
+  //   getCategories(selected);
+  // }, [selected]);
 
   const selectTab = (tabId: TAB) => {
     setSelected(tabId);
@@ -41,24 +60,24 @@ const Tab = ({saveList}: Props) => {
     setSelectedCategories(categorycd);
   };
 
-  const getCategories = async (tabId: string) => {
-    try {
-      const result = await getCategory(tabId);
-      console.log(result);
-      setCategories(result);
-    } catch (e) {
-      console.log("error", e);
-    }
-  };
+  // const getCategories = async (tabId: string) => {
+  //   try {
+  //     const result = await getCategory(tabId);
+  //     console.log(result);
+  //     setCategories(result);
+  //   } catch (e) {
+  //     console.log("error", e);
+  //   }
+  // };
 
-  const getLists = async (category: string, tab: string) => {
-    try {
-      const result = await getList(category, tab);
-      saveList(result);
-    } catch (e) {
-      console.log("error", e);
-    }
-  }
+  // const getLists = async (category: string, tab: string) => {
+  //   try {
+  //     const result = await getList(category, tab);
+  //     saveList(result);
+  //   } catch (e) {
+  //     console.log("error", e);
+  //   }
+  // }
 
   return (
     <S.MainTabList>
@@ -94,7 +113,7 @@ const Tab = ({saveList}: Props) => {
         <S.CategoryWrapper>
           <S.CategoryWrapperIn>
             {categories?.map((item) => {
-              console.log(item)
+              console.log(item);
               return (
                 <S.CategoryTab
                   key={item.categorycd}
