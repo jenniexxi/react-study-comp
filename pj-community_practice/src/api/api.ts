@@ -41,3 +41,26 @@ export const getList = async (
   const result = await axiosInstance.post(`/list`, body);
   return result.data;
 };
+
+export type ListContentsDetail = {
+  boardid: string;
+  title: string;
+  content: string;
+  viewer: number;
+  like: number;
+  name: string;
+  profileimage: string;
+  type: string;
+  createtime: string;
+  paytype: string;
+  store: string;
+  userseq: string;
+};
+
+export const getDetail = async (
+  boardid: string
+): Promise<ListContentsDetail> => {
+  const result = await axiosInstance.get(`/detail?boardid=${boardid}`);
+
+  return result.data;
+};

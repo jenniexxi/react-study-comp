@@ -10,7 +10,7 @@ function Router() {
       <Routes>
         <Route element={<Layout />}>
           <Route path="/" element={<BoardList />} />
-          <Route path="/detail/id" element={<BoardDetail />} />
+          <Route path="/detail/:id" element={<BoardDetail />} />
           <Route path="/write" element={<BoardWrite />} />
         </Route>
       </Routes>
