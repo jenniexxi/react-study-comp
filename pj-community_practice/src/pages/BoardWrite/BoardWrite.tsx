@@ -1,11 +1,61 @@
 import * as S from "./BoardWrite.style";
 import InfoAlram from "@resources/svg/infoalram";
 import { IconAdd, ImgBoard1, ImgClose } from "@resources/images";
+import { ChangeEvent, FormEvent, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import WriteAPI from "@api/Write";
 
 const BoardWrite = () => {
+  const [title, setTitle] = useState("");
+  const [textArea, setTextArea] = useState("");
+  const [place, setPlace] = useState("");
+  const [isSubmit, setIsSubmit] = useState(false);
+  const navigate = useNavigate();
+
+  const changeTitle = (event: ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.currentTarget.value);
+  };
+
+  const changeTextArea = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    setTextArea(event.currentTarget.value);
+  };
+
+  const submitForm = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log("title:", title, "place:", place);
+
+    if (!title) {
+      setIsSubmit(true);
+      return;
+    }
+
+    try {
+      const getapi = await WriteAPI.sendWrite({
+        title: title,
+        content: textArea,
+        paytype: "1",
+        store: place,
+        userseq: "1",
+        type: "1",
+        tab: "1",
+      });
+
+      if (getapi) {
+        alert("새 글 등록 성공");
+        navigate("/");
+      }
+    } catch (e) {
+      console.log("error", e);
+    }
+  };
+
+  const changePlace = (event: ChangeEvent<HTMLInputElement>) => {
+    setPlace(event.currentTarget.value);
+  };
+
   return (
     <S.BoardWriteContainer>
-      <S.BoardForm action="">
+      <S.BoardForm action="" onSubmit={submitForm}>
         <S.TopTitleWrapper>
           <S.TopTitleArea>
             <S.BoardCategory>커뮤니티 &gt; 꿀팁자랑</S.BoardCategory>
@@ -20,17 +70,21 @@ const BoardWrite = () => {
             <S.ContsTitle>게시글 제목</S.ContsTitle>
             <div>
               <input
+                onChange={changeTitle}
                 type="text"
                 placeholder="브랜드와 제품명을 적어주세요"
               />
             </div>
+            {isSubmit && !title && (
               <S.MsgError>게시글 제목을 입력해주세요.</S.MsgError>
+            )}
           </S.ContsArea>
           <S.ContsArea>
             <S.ContsTitle>구매처 및 할인내용</S.ContsTitle>
             <S.ContsBox>
               <S.itemBoxLeft>
                 <input
+                  onChange={changePlace}
                   type="text"
                   placeholder="예시) 쿠팡"
                 />
@@ -75,6 +129,7 @@ const BoardWrite = () => {
             <S.ContsTitle>자세한 설명</S.ContsTitle>
             <S.TextAreaBox>
               <S.ContsTextArea
+                onChange={changeTextArea}
                 placeholder="윰탱구리님, 어떤 혜택을 받으셨나요?"
               ></S.ContsTextArea>
               <S.CountBox>
