@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import "./App.css";
 import TodoItem from "./TodoItem";
 
@@ -15,10 +15,6 @@ function App() {
   const [searchLists, setSearchLists] = useState<ListType[]>([]);
 
   const counter = useRef(0);
-
-  useEffect(() => {
-    searchItem();
-  }, [searchInput]);
 
   const addTodo = () => {
     const todoItem: ListType = {
@@ -53,7 +49,7 @@ function App() {
     // if (searchInput.length === 0) {
     //   return;
     // }
-
+    
     const result: ListType[] = lists.filter((item) => {
       return item.content.includes(searchInput);
     });
