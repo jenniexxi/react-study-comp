@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ListType } from "./App";
-// import * as S from "./TodoItem.style";
+import * as S from "./TodoItem.style";
 
 type Props = {
   list: ListType;
@@ -27,8 +27,8 @@ const TodoItem = ({ list, handleDelete, handleUpdate }: Props) => {
   };
 
   return (
-    <li key={list.id}>
-      <div>
+    <S.TodoItemList key={list.id}>
+      <S.TodoItem>
         <input type="checkbox" checked={isChecked} onChange={toggleCheckbox} />
         {isActive ? (
           <input
@@ -46,16 +46,16 @@ const TodoItem = ({ list, handleDelete, handleUpdate }: Props) => {
             {list.content}
           </span>
         )}
-      </div>
-      <div>
+      </S.TodoItem>
+      <S.ButtonBox>
         <button type="button" onClick={updateMode}>
           {isActive ? "완료" : "수정"}
         </button>
         <button type="button" onClick={() => handleDelete(list.id)}>
           삭제
         </button>
-      </div>
-    </li>
+      </S.ButtonBox>
+    </S.TodoItemList>
   );
 };
 

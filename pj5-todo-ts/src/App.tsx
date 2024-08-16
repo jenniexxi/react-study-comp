@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import TodoItem from "./TodoItem";
+import * as S from "./TodoItem.style";
 
 export type ListType = {
   id: string;
@@ -63,7 +64,7 @@ function App() {
   return (
     <div>
       <h1>todo list</h1>
-      <div>
+      <S.InputBox>
         <input
           placeholder="검색어를 입력하세요"
           value={searchInput}
@@ -72,9 +73,8 @@ function App() {
         <button type="button" onClick={searchItem}>
           검색
         </button>
-        <button type="button">해지</button>
-      </div>
-      <div>
+      </S.InputBox>
+      <S.InputBox>
         <input
           type="text"
           placeholder="입력해주세요"
@@ -84,8 +84,8 @@ function App() {
         <button type="button" onClick={addTodo}>
           추가
         </button>
-      </div>
-      <ul>
+      </S.InputBox>
+      <S.TodoWrapper>
         {searchLists.length > 0
           ? searchLists.map((list) => {
               return (
@@ -107,7 +107,7 @@ function App() {
                 />
               );
             })}
-      </ul>
+      </S.TodoWrapper>
     </div>
   );
 }
