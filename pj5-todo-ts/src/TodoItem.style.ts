@@ -35,6 +35,8 @@ export const TodoItemList = styled.li`
 `;
 
 export const TodoItem = styled.div`
+  flex: 1;
+  display: flex;
   span {
     margin-left: 10px;
   }
@@ -46,4 +48,13 @@ export const ButtonBox = styled.div`
       margin-right: 10px;
     }
   }
+`;
+
+export const ActiveInput = styled.input`
+  height: 40px;
+  border: 1px solid #c1c1c1;
+  border-radius: 3px;
+  box-sizing: border-box;
+  margin-left: 10px;
+  font-size: 16px;
 `;

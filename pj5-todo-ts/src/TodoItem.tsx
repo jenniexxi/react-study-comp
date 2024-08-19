@@ -31,7 +31,7 @@ const TodoItem = ({ list, handleDelete, handleUpdate }: Props) => {
       <S.TodoItem>
         <input type="checkbox" checked={isChecked} onChange={toggleCheckbox} />
         {isActive ? (
-          <input
+          <S.ActiveInput
             type="text"
             value={input}
             onChange={(event) => setInput(event?.target.value)}

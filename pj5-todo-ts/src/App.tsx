@@ -1,7 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
+import styled from "styled-components";
 import TodoItem from "./TodoItem";
 import * as S from "./TodoItem.style";
+import DayCalendar from "./DayCalendar";
+import Calendar from "react-calendar";
+import Portal from "./Portal";
+import Modal from "./Modal";
+
+import "react-calendar/dist/Calendar.css";
+import "./calendar.style.css";
 
 export type ListType = {
   id: string;
@@ -9,11 +17,16 @@ export type ListType = {
   chk: boolean;
 };
 
+type DatePiece = Date | null;
+type SelectedDate = DatePiece | [DatePiece, DatePiece];
+
 function App() {
   const [input, setInput] = useState("");
   const [lists, setLists] = useState<ListType[]>([]);
   const [searchInput, setSearchInput] = useState("");
   const [searchLists, setSearchLists] = useState<ListType[]>([]);
+  const [selectedDate, setSelectedDate] = useState<SelectedDate>(new Date());
+  const [showCalendar, setShowCalendar] = useState(false);
 
   const counter = useRef(0);
 
@@ -61,9 +74,17 @@ function App() {
     setSearchLists(result);
   };
 
+  const toggleCalendar = () => {
+    setShowCalendar(!showCalendar);
+  };
+
   return (
     <div>
       <h1>todo list</h1>
+      <DayCalendar
+        selectedDate={selectedDate as Date}
+        toggleCalendar={toggleCalendar}
+      />
       <S.InputBox>
         <input
           placeholder="검색어를 입력하세요"
@@ -108,11 +129,36 @@ function App() {
               );
             })}
       </S.TodoWrapper>
+      {showCalendar && (
+        <Portal>
+          <Modal
+            type="center"
+            onClickBackDrop={() => setShowCalendar(false)}
+            backDropAnimation={false}
+          >
+            <CalendarView>
+              <Calendar
+                onChange={(value) => {
+                  setSelectedDate(value);
+                  setShowCalendar(false);
+                }}
+                value={selectedDate}
+              />
+            </CalendarView>
+          </Modal>
+        </Portal>
+      )}
     </div>
   );
 }
 
 export default App;
+
+const CalendarView = styled.div`
+  padding: 10px;
+  border-radius: 10px;
+  background: #ffffff;
+`;
 
 // 기능: 추가, 삭제, 수정, 완료, 검색
 // 추가
@@ -147,3 +193,13 @@ export default App;
 
 // ? (옵셔널 체이닝)
 // 객체의 속성에 접근할 때, 속성이나 객체가 null 또는 undefined 일 경우 에러를 발생시키지 않고 undefined를 반환하도록한다.
+
+// dayjs
+// <, > 버튼 클릭했을 때 날짜를 변경해주는 값이 필요
+// prev, next 버튼 클릭 시, 날짜 변경
+// 날짜 관리는 useState
+
+// 가운데 날짜 보여주는 텍스트 클릭했을 때 캘린터가 보여지고, 선택한 날짜로 변경해주는 값이 필요
+// 캘린더에서 날짜를 선택하면 보여주는 부분의 텍스트가 변경되어야함
+// 선택한 텍스트 관리해야함
+// 캘린더 토글 팝업 띄우기
