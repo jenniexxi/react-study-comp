@@ -40,7 +40,7 @@ const TodoItem = ({ list, handleDelete, handleUpdate }: Props) => {
           <span
             style={{
               textDecoration: isChecked ? "line-through" : "none",
-              color: isChecked ? "#f00" : "#fff",
+              color: isChecked ? "#f00" : "#000",
             }}
           >
             {list.content}
