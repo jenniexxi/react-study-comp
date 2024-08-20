@@ -7,43 +7,56 @@ import DayCalendar from "./DayCalendar";
 import Calendar from "react-calendar";
 import Portal from "./Portal";
 import Modal from "./Modal";
+import { addTodosList, getTodosList, TodosList } from "./api/api";
 
 import "react-calendar/dist/Calendar.css";
 import "./calendar.style.css";
-
-export type ListType = {
-  id: string;
-  content: string;
-  chk: boolean;
-};
 
 type DatePiece = Date | null;
 type SelectedDate = DatePiece | [DatePiece, DatePiece];
 
 function App() {
   const [input, setInput] = useState("");
-  const [lists, setLists] = useState<ListType[]>([]);
+  const [lists, setLists] = useState<TodosList[]>([]);
   const [searchInput, setSearchInput] = useState("");
-  const [searchLists, setSearchLists] = useState<ListType[]>([]);
+  const [searchLists, setSearchLists] = useState<TodosList[]>([]);
   const [selectedDate, setSelectedDate] = useState<SelectedDate>(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
 
   const counter = useRef(0);
 
   useEffect(() => {
+    showTodoList();
+  }, [selectedDate]);
+
+  useEffect(() => {
     searchItem();
   }, [searchInput]);
 
-  const addTodo = () => {
-    const todoItem: ListType = {
-      id: counter.current?.toString(),
-      content: input,
-      chk: false,
-    };
-    counter.current++;
-    setLists((prev) => [...prev, todoItem]);
-    setInput("");
-    console.log(todoItem);
+  // ver.1
+  // const addTodo = () => {
+  //   const todoItem: ListType = {
+  //     id: counter.current?.toString(),
+  //     content: input,
+  //     chk: false,
+  //   };
+  //   counter.current++;
+  //   setLists((prev) => [...prev, todoItem]);
+  //   setInput("");
+  //   console.log(todoItem);
+  // };
+
+  // ver.2
+  const addTodo = async () => {
+    try {
+      const newTodo = await addTodosList(input, selectedDate as Date);
+      counter.current++;
+      setLists((prev) => [...prev, newTodo]);
+      setInput("");
+      console.log(newTodo);
+    } catch (e) {
+      console.error("error", e);
+    }
   };
 
   const handleDelete = (id: string) => {
@@ -68,7 +81,7 @@ function App() {
     //   return;
     // }
 
-    const result: ListType[] = lists.filter((item) => {
+    const result: TodosList[] = lists.filter((item) => {
       return item.content.includes(searchInput);
     });
     setSearchLists(result);
@@ -78,12 +91,27 @@ function App() {
     setShowCalendar(!showCalendar);
   };
 
+  const showTodoList = async () => {
+    try {
+      const originTodo = await getTodosList(selectedDate as Date);
+      setLists(originTodo);
+      console.log(originTodo);
+    } catch (e) {
+      console.error("error", e);
+    }
+  };
+
+  const onDateChange = (newData: SelectedDate) => {
+    setSelectedDate(newData);
+  }
+
   return (
     <div>
       <h1>todo list</h1>
       <DayCalendar
         selectedDate={selectedDate as Date}
         toggleCalendar={toggleCalendar}
+        onDateChange={onDateChange}
       />
       <S.InputBox>
         <input
@@ -203,3 +231,9 @@ const CalendarView = styled.div`
 // 캘린더에서 날짜를 선택하면 보여주는 부분의 텍스트가 변경되어야함
 // 선택한 텍스트 관리해야함
 // 캘린더 토글 팝업 띄우기
+
+// ----
+// CURD 작업
+// Create 작업 위해 api 작성
+// 뿌려주기
+//

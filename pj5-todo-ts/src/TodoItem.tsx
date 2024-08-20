@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { ListType } from "./App";
 import * as S from "./TodoItem.style";
+import { TodosList } from "./api/api";
 
 type Props = {
-  list: ListType;
+  list: TodosList;
   handleDelete: (id: string) => void;
   handleUpdate: (id: string, content: string) => void;
 };

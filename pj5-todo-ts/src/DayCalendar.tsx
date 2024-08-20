@@ -6,9 +6,10 @@ import * as S from "./DayCalendar.style";
 type CalendarProps = {
   selectedDate: Date;
   toggleCalendar: () => void;
+  onDateChange: (newData: Date) => void;
 };
 
-const DayCalendar = ({ selectedDate, toggleCalendar }: CalendarProps) => {
+const DayCalendar = ({ selectedDate, toggleCalendar, onDateChange }: CalendarProps) => {
   const [currentDate, setCurrentDate] = useState(dayjs());
 
   useEffect(() => {
@@ -16,11 +17,17 @@ const DayCalendar = ({ selectedDate, toggleCalendar }: CalendarProps) => {
   }, [selectedDate]);
 
   const preDate = () => {
-    setCurrentDate(currentDate.add(-1, "day"));
+    // setCurrentDate(currentDate.add(-1, "day"));
+    const newDate = currentDate.add(-1, "day");
+    setCurrentDate(newDate);
+    onDateChange(newDate.toDate());
   };
 
   const nextDate = () => {
-    setCurrentDate(currentDate.add(1, "day"));
+    // setCurrentDate(currentDate.add(1, "day"));
+    const newDate = currentDate.add(1, "day");
+    setCurrentDate(newDate);
+    onDateChange(newDate.toDate());
   };
 
   return (
