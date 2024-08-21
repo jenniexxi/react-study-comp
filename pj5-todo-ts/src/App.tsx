@@ -57,7 +57,6 @@ function App() {
   const addTodo = async () => {
     try {
       const newTodo = await addTodosList(input, selectedDate as Date);
-      // counter.current++;
       setLists((prev) => [newTodo, ...prev]);
       setInput("");
       console.log(newTodo);

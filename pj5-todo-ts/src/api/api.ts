@@ -22,7 +22,7 @@ export type TodosList = {
 
 export const addTodosList = async (
   content: string,
-  date: Date,
+  date: Date
 ): Promise<TodosList> => {
   // user_id 는 2 라는 값으로 정했기 때문에 아래에서만 정의
   const body = { content, date, user_id: 2 };
@@ -58,10 +58,8 @@ export const getTodosList = async (
   return result.data;
 };
 
-export const updateTodosList = async (
-  body: TodosList
-): Promise<TodosList> => {
-  console.log(body)
+export const updateTodosList = async (body: TodosList): Promise<TodosList> => {
+  console.log(body);
   const result = await axiosInstance.put(`todos`, body);
 
   return result.data;
@@ -69,18 +67,22 @@ export const updateTodosList = async (
 
 export const deleteTodosList = async (
   id: string,
-  user_id: number,
+  user_id: number
 ): Promise<TodosList> => {
-  const result = await axiosInstance.delete(`todos?id=${id}&user_id=${user_id}`);
+  const result = await axiosInstance.delete(
+    `todos?id=${id}&user_id=${user_id}`
+  );
 
   return result.data;
 };
 
 export const searchTodosList = async (
   user_id: number,
-  q: string,
+  q: string
 ): Promise<TodosList[]> => {
-  const result = await axiosInstance.get(`todos/search?user_id=${user_id}&q=${q}`);
+  const result = await axiosInstance.get(
+    `todos/search?user_id=${user_id}&q=${q}`
+  );
 
   return result.data;
 };
