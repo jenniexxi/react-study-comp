@@ -42,7 +42,7 @@
 
 - 선택한 할일을 알아내려면 해당 할일(li)의 id 값을 알아야함 (id 값 넘겨주기)
 - 삭제하려는 할일(li) 의 id !== lists.id 는 현재 순회 중인 할 일 객체의 id 비교해서 return
-- filter : true/false 를 꼭 return 해야함, true (결과값 포함) / false (결과갑 안 포함<br>
+- filter : true/false 를 꼭 return 해야함, true (결과값 포함) / false (결과값 안 포함)<br>
   return 해주는 값은 true/false 의 형태를 해주어야 하기 때문에 그 값이 true가 되면 그대로 결과값에 넣음
 - filter 된 리스트를 업데이트 (setLists)
 - 찾아본 내용 : 제거할 때 해당 목록 (li) 에 key 값을 넣어줘야 하는데 이 부분에 대해서 찾아봄
