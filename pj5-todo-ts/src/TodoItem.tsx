@@ -7,7 +7,6 @@ type Props = {
   handleDelete: (id: string) => void;
   //handleUpdate: (id: string, content: string) => void;
   handleUpdate: (item: TodosList) => void;
- 
 };
 
 const TodoItem = ({ list, handleDelete, handleUpdate }: Props) => {
@@ -21,7 +20,6 @@ const TodoItem = ({ list, handleDelete, handleUpdate }: Props) => {
       // handleUpdate(list.id, input);
       // {} 안에서는 ... 을 항상 먼저 써야 한다.
       handleUpdate({ ...list, content: input });
-
     } else {
       setIsActive(true);
     }
@@ -29,13 +27,17 @@ const TodoItem = ({ list, handleDelete, handleUpdate }: Props) => {
 
   const toggleCheckbox = () => {
     // setIsChecked(!isChecked)
-    handleUpdate({...list, completed:!list.completed});
+    handleUpdate({ ...list, completed: !list.completed });
   };
 
   return (
     <S.TodoItemList key={list.id}>
       <S.TodoItem>
-        <input type="checkbox" checked={list.completed} onChange={toggleCheckbox} />
+        <input
+          type="checkbox"
+          checked={list.completed}
+          onChange={toggleCheckbox}
+        />
         {isActive ? (
           <S.ActiveInput
             type="text"

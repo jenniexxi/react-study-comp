@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 import styled from "styled-components";
 import TodoItem from "./TodoItem";
@@ -30,7 +30,7 @@ function App() {
   const [selectedDate, setSelectedDate] = useState<SelectedDate>(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
 
-  const counter = useRef(0);
+  // const counter = useRef(0);
 
   useEffect(() => {
     showTodoList();
@@ -57,7 +57,7 @@ function App() {
   const addTodo = async () => {
     try {
       const newTodo = await addTodosList(input, selectedDate as Date);
-      counter.current++;
+      // counter.current++;
       setLists((prev) => [newTodo, ...prev]);
       setInput("");
       console.log(newTodo);
