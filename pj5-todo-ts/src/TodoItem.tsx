@@ -5,7 +5,8 @@ import { TodosList } from "./api/api";
 type Props = {
   list: TodosList;
   handleDelete: (id: string) => void;
-  handleUpdate: (id: string, content: string) => void;
+  //handleUpdate: (id: string, content: string) => void;
+  handleUpdate: (item: TodosList) => void;
 };
 
 const TodoItem = ({ list, handleDelete, handleUpdate }: Props) => {
@@ -16,7 +17,10 @@ const TodoItem = ({ list, handleDelete, handleUpdate }: Props) => {
   const updateMode = () => {
     if (isActive) {
       setIsActive(false);
-      handleUpdate(list.id, input);
+      // handleUpdate(list.id, input);
+      // 
+      handleUpdate({ ...list, content: input });
+
     } else {
       setIsActive(true);
     }

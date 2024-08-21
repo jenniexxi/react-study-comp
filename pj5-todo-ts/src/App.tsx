@@ -7,7 +7,14 @@ import DayCalendar from "./DayCalendar";
 import Calendar from "react-calendar";
 import Portal from "./Portal";
 import Modal from "./Modal";
-import { addTodosList, getTodosList, TodosList } from "./api/api";
+import {
+  addTodosList,
+  deleteTodosList,
+  getTodosList,
+  searchTodosList,
+  TodosList,
+  updateTodosList,
+} from "./api/api";
 
 import "react-calendar/dist/Calendar.css";
 import "./calendar.style.css";
@@ -51,7 +58,7 @@ function App() {
     try {
       const newTodo = await addTodosList(input, selectedDate as Date);
       counter.current++;
-      setLists((prev) => [...prev, newTodo]);
+      setLists((prev) => [newTodo, ...prev]);
       setInput("");
       console.log(newTodo);
     } catch (e) {
@@ -59,33 +66,75 @@ function App() {
     }
   };
 
-  const handleDelete = (id: string) => {
-    const itemFilter = lists.filter((list) => {
-      return id !== list.id;
-    });
-    setLists(itemFilter);
+  const handleDelete = async (id: string) => {
+    // const itemFilter = lists.filter((list) => {
+    //   return id !== list.id;
+    // });
+    // setLists(itemFilter);
+
+    try {
+      await deleteTodosList(id, 2);
+      setLists((lists) => lists.filter((list) => id !== list.id));
+    } catch (e) {
+      console.error("error", e);
+    }
   };
 
-  const handleUpdate = (id: string, content: string) => {
-    const itemUpdate = lists.map((list) => {
-      if (list.id === id) {
-        list.content = content;
-      }
-      return list;
-    });
-    setLists(itemUpdate);
+  // ver.1
+  // const handleUpdate = (id: string, content: string) => {
+  //   const itemUpdate = lists.map((list) => {
+  //     if (list.id === id) {
+  //       list.content = content;
+  //     }
+  //     return list;
+  //   });
+  //   setLists(itemUpdate);
+  // };
+
+  // ver.2
+  const handleUpdate = async (item: TodosList) => {
+    try {
+      const updatedTodo = await updateTodosList(item);
+      setLists((prev) =>
+        prev.map((list) => (list.id === item.id ? updatedTodo : list))
+      );
+    } catch (e) {
+      console.error("error", e);
+    }
   };
 
-  const searchItem = () => {
-    // if (searchInput.length === 0) {
-    //   return;
-    // }
+  // ver.1
+  // const searchItem = () => {
+  //   // if (searchInput.length === 0) {
+  //   //   return;
+  //   // }
 
-    const result: TodosList[] = lists.filter((item) => {
-      return item.content.includes(searchInput);
-    });
-    setSearchLists(result);
+  //   const result: TodosList[] = lists.filter((item) => {
+  //     return item.content.includes(searchInput);
+  //   });
+  //   setSearchLists(result);
+  // };
+
+  // ver.2
+  const searchItem = async () => {
+    try {
+      const searchedTodo = await searchTodosList(2, searchInput);
+      setSearchLists(searchedTodo);
+    } catch (e) {
+      console.error("error", e);
+    }
   };
+
+  // ver.3 - then 방식
+  // const searchItem2 = () => {
+  //   try {
+  //     searchTodosList(2, searchInput)
+  //       .then((todos) => setSearchLists(todos))
+  //       .catch((error) => console.log(error));
+  //   } catch (e) {
+  //     console.error("error", e);
+  //   }
+  // };
 
   const toggleCalendar = () => {
     setShowCalendar(!showCalendar);
@@ -103,7 +152,7 @@ function App() {
 
   const onDateChange = (newData: SelectedDate) => {
     setSelectedDate(newData);
-  }
+  };
 
   return (
     <div>
@@ -135,7 +184,7 @@ function App() {
         </button>
       </S.InputBox>
       <S.TodoWrapper>
-        {searchLists.length > 0
+        {searchInput.length > 0
           ? searchLists.map((list) => {
               return (
                 <TodoItem
@@ -235,5 +284,16 @@ const CalendarView = styled.div`
 // ----
 // CURD 작업
 // Create 작업 위해 api 작성
-// 뿌려주기
-//
+// 추가되는 함수에 api 연결하기 try-catch (try-then 등)
+
+// Update 작업
+// Update 작업 위해 api 작성
+// 추가되는 함수에 api 연결하기 try-catch (try-then 등)
+
+// Read 작업
+// Read 작업 위해 api 작성
+// 추가되는 함수에 api 연결하기 try-catch (try-then 등)
+
+// Delete 작업
+// Delete 작업 위해 api 작성
+// 추가되는 함수에 api 연결하기 try-catch (try-then 등)
