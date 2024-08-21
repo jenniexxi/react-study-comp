@@ -7,18 +7,19 @@ type Props = {
   handleDelete: (id: string) => void;
   //handleUpdate: (id: string, content: string) => void;
   handleUpdate: (item: TodosList) => void;
+ 
 };
 
 const TodoItem = ({ list, handleDelete, handleUpdate }: Props) => {
   const [isActive, setIsActive] = useState(false);
   const [input, setInput] = useState(list.content);
-  const [isChecked, setIsChecked] = useState(false);
+  // const [isChecked, setIsChecked] = useState(false);
 
   const updateMode = () => {
     if (isActive) {
       setIsActive(false);
       // handleUpdate(list.id, input);
-      // 
+      // {} 안에서는 ... 을 항상 먼저 써야 한다.
       handleUpdate({ ...list, content: input });
 
     } else {
@@ -27,13 +28,14 @@ const TodoItem = ({ list, handleDelete, handleUpdate }: Props) => {
   };
 
   const toggleCheckbox = () => {
-    setIsChecked(!isChecked);
+    // setIsChecked(!isChecked)
+    handleUpdate({...list, completed:!list.completed});
   };
 
   return (
     <S.TodoItemList key={list.id}>
       <S.TodoItem>
-        <input type="checkbox" checked={isChecked} onChange={toggleCheckbox} />
+        <input type="checkbox" checked={list.completed} onChange={toggleCheckbox} />
         {isActive ? (
           <S.ActiveInput
             type="text"
@@ -43,8 +45,8 @@ const TodoItem = ({ list, handleDelete, handleUpdate }: Props) => {
         ) : (
           <span
             style={{
-              textDecoration: isChecked ? "line-through" : "none",
-              color: isChecked ? "#f00" : "#000",
+              textDecoration: list.completed ? "line-through" : "none",
+              color: list.completed ? "#f00" : "#000",
             }}
           >
             {list.content}
