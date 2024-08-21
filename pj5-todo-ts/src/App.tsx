@@ -302,3 +302,4 @@ const CalendarView = styled.div`
 // 기존 : todoItem 에 isChecked 로 되어 있음 => TodosList 안에 completed 로 바꿔야함
 // 기존 isChecked 를 삭제, completed 로 교체 (TodoItem 에서 isChecked 들어간 부분 수정)
 // setIsChecked 를 completedUpdate 로 바꿈 (api 에서는 update api put todos 로 바꿈)
+// api 새로 만들지 않고, 기존 update api 가져다 씀

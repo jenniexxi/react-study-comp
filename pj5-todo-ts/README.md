@@ -4,15 +4,15 @@
 
 - 요구사항
   1. 추가
-      - Todo List를 하단 list영역에 노출
+     - Todo List를 하단 list영역에 노출
   2. 삭제
-      - 선택한 TodoList 삭제
+     - 선택한 TodoList 삭제
   3. 수정
-      - 선택한 TodoList 수정
+     - 선택한 TodoList 수정
   4. 검색
-      - List 에 있는 내용중 검색어가 포함된
+     - List 에 있는 내용중 검색어가 포함된
   5. 완료
-      - 선택한 TodoList에 완료 상태 표시
+     - 선택한 TodoList에 완료 상태 표시
 
 2. 기타사항
    1. Chat GPT로 포괄적인 질문 금지
@@ -22,6 +22,7 @@
 ---
 
 ## 2. 기능 detail
+
 ### 1. 추가 - addTodo
 
 #### 1. 입력값 받기 / 추가 버튼 클릭 -> 목록에 리스트 추가
@@ -37,7 +38,7 @@
 
 ### 2. 삭제 - handleDelete
 
-#### 1.  선택한 할일을 알아내기 / 해당 할일을 목록에서 제거
+#### 1. 선택한 할일을 알아내기 / 해당 할일을 목록에서 제거
 
 - 선택한 할일을 알아내려면 해당 할일(li)의 id 값을 알아야함 (id 값 넘겨주기)
 - 삭제하려는 할일(li) 의 id !== lists.id 는 현재 순회 중인 할 일 객체의 id 비교해서 return
@@ -48,7 +49,7 @@
 
 ### 3. 수정 - handleUpdate
 
-#### 1.  수정하려는 목록(li) 알아내기
+#### 1. 수정하려는 목록(li) 알아내기
 
 - map 을 사용하여 lists 상태 배열을 변환
 - 배열의 각 요소(lists)를 순회하면서, 해당 요소의 id 가 전달된 id 와 일치하는지 확인<br>
@@ -58,7 +59,7 @@
 - 기존 내용 그대로 가져와서 보여주기<br>
   : id 와 content를 변수로 받아오는데, 이때 input 값을 넣어주면 기존 값을 그대로 보여줌
 
-#### 2.  수정 - 수정 완료 모드 전환
+#### 2. 수정 - 수정 완료 모드 전환
 
 - 내용은 span 태그에 담겨 있는데 input 태그로 변경<br>
   : isActive 조건에 따라 input 과 span 변환
@@ -72,7 +73,7 @@
 
 ### 4. 완료 (할 일 완료)
 
-#### 1.  체크박스 checked 여부에 따라 스타일 적용
+#### 1. 체크박스 checked 여부에 따라 스타일 적용
 
 - isChecked 로 컨트롤
 
@@ -93,8 +94,71 @@
 - 검색된 리스트 목록에 저장 setSearchLists(result)
 
 #### 4. 입력할 때마다 검색 기능 필요
+
 - 입력값을 쓸 때마다 검색 기능이 이루어져야 하기 떄문에 useEffect를 사용
 
 #### 5. 입력값이 없을 때 원래 목록 보여주기
 
 - 입력값의 유무는 length 조건을 이용해서 작성
+
+---
+
+---
+
+---
+
+[기능 용어 정리]
+? (옵셔널 체이닝)<br>
+// 객체의 속성에 접근할 때, 속성이나 객체가 null 또는 undefined 일 경우 에러를 발생시키지 않고 undefined를 반환하도록한다.
+
+---
+
+---
+
+---
+
+## 3. dayjs
+
+### 1. <(prev), >(next) 버튼 클릭했을 때 날짜를 변경해주는 값이 필요
+
+- 날짜 관리는 useState
+
+### 2. 가운데 날짜 보여주는 텍스트 클릭했을 때 캘린더 노출하고 선택한 날짜로 변경
+
+- 캘린더에서 날짜 선택하면 텍스트 변경
+- 선택한 텍스트 관리
+- 캘린터 토글 팝업 띄우기
+
+## 4. API - API 생성, 연결, CRUD
+
+### 1. Create
+
+##### 1. create 작업 위해 api 작성
+
+##### 2. 추가되는 함수에 api 연결하기 try-catch (try-then 등)
+
+### 2. Update
+
+##### 1. Update 작업 위해 api 작성
+
+##### 2. 추가되는 함수에 api 연결하기 try-catch (try-then 등)
+
+### 3. Read
+
+##### 1. Read 작업 위해 api 작성
+
+##### 2. 추가되는 함수에 api 연결하기 try-catch (try-then 등)
+
+### 4. Delete
+
+##### 1. Delete 작업 위해 api 작성
+
+##### 2. 추가되는 함수에 api 연결하기 try-catch (try-then 등)
+
+### 5. 완료 - crud 이외 기능
+
+##### 1. 기존 : todoItem 에 isChecked 로 되어 있음 => 변경 : TodosList 안에 completed 로 바꿔야함
+
+- 기존 isChecked 를 삭제, completed 로 교체 (TodoItem 에서 isChecked 들어간 부분 수정)
+- setIsChecked 를 completedUpdate 로 바꿈
+- api 새로 만들지 않고, 기존 update api 가져다 씀 (update api - put todos)
