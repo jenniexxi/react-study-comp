@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
-import { ArrowLeft, ArrowRight } from "./resources/svg";
+import { ArrowLeft, ArrowRight } from "../../../resources/svg";
 import * as S from "./DayCalendar.style";
 
 type CalendarProps = {

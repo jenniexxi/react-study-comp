@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import "./App.css";
-import TodoItem from "./TodoItem";
+import TodoItem from "./pages/TodoList/features/TodoItem";
 
 export type ListType = {
   id: string;
@@ -49,7 +49,7 @@ function App() {
     // if (searchInput.length === 0) {
     //   return;
     // }
-    
+
     const result: ListType[] = lists.filter((item) => {
       return item.content.includes(searchInput);
     });

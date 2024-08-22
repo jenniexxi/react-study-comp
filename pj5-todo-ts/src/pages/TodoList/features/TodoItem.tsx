@@ -1,6 +1,6 @@
 import { useState } from "react";
 import * as S from "./TodoItem.style";
-import { TodosList } from "./api/api";
+import { TodosList } from "../../../api/Todo";
 
 type Props = {
   list: TodosList;
