@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import TodoItem from "./features/TodoItem";
 import * as S from "./features/TodoItem.style";
@@ -17,95 +17,140 @@ import {
 
 import "react-calendar/dist/Calendar.css";
 import "./features/calendar.style.css";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import dayjs from "dayjs";
 
 type DatePiece = Date | null;
 type SelectedDate = DatePiece | [DatePiece, DatePiece];
 
 function App() {
   const [input, setInput] = useState("");
-  //   const [lists, setLists] = useState<TodosList[]>([]);
+  const [lists, setLists] = useState<TodosList[]>([]);
   const [searchInput, setSearchInput] = useState("");
-  //   const [searchLists, setSearchLists] = useState<TodosList[]>([]);
+  const [searchLists, setSearchLists] = useState<TodosList[]>([]);
   const [selectedDate, setSelectedDate] = useState<SelectedDate>(new Date());
   const [showCalendar, setShowCalendar] = useState(false);
 
   // const counter = useRef(0);
 
-  const queryClient = useQueryClient();
+  useEffect(() => {
+    showTodoList();
+  }, [selectedDate]);
 
-  const {
-    data: lists,
-    isLoading,
+  useEffect(() => {
+    searchItem();
+  }, [searchInput]);
 
-    error,
-  } = useQuery({
-    queryKey: ["getTodo", selectedDate],
-    queryFn: () => {
-      return getTodosList(dayjs(selectedDate as Date).format("YYYY-MM-DD"));
-    },
-  });
-
-  const { data: searchLists } = useQuery({
-    queryKey: ["searchTodo", searchInput],
-    queryFn: () => searchTodosList(2, searchInput),
-  });
-
-  const addTodoMutation = useMutation({
-    mutationFn: () => addTodosList(input, selectedDate as Date),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["getTodo", selectedDate] });
-      setInput("");
-    },
-    onError: (error) => {
-      console.error("error", error);
-    },
-  });
-
-  const updateTodoMutation = useMutation({
-    mutationFn: (todo: TodosList) => updateTodosList(todo),
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["getTodo", selectedDate] });
-    },
-  });
-
-  const deleteTodoMutaion = useMutation({
-    mutationFn: (id: string) => deleteTodosList(id, 2),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ["getTodo", selectedDate],
-      });
-    },
-    onError: (error) => {
-      console.error("error", error);
-    },
-  });
+  // ver.1
+  // const addTodo = () => {
+  //   const todoItem: ListType = {
+  //     id: counter.current?.toString(),
+  //     content: input,
+  //     chk: false,
+  //   };
+  //   counter.current++;
+  //   setLists((prev) => [...prev, todoItem]);
+  //   setInput("");
+  //   console.log(todoItem);
+  // };
 
   // ver.2
   const addTodo = async () => {
-    addTodoMutation.mutate();
+    try {
+      const newTodo = await addTodosList(input, selectedDate as Date);
+      setLists((prev) => [newTodo, ...prev]);
+      setInput("");
+      console.log(newTodo);
+    } catch (e) {
+      console.error("error", e);
+    }
   };
 
   const handleDelete = async (id: string) => {
-    deleteTodoMutaion.mutate(id);
+    // const itemFilter = lists.filter((list) => {
+    //   return id !== list.id;
+    // });
+    // setLists(itemFilter);
+
+    try {
+      await deleteTodosList(id, 2);
+      setLists((lists) => lists.filter((list) => id !== list.id));
+    } catch (e) {
+      console.error("error", e);
+    }
   };
+
+  // ver.1
+  // const handleUpdate = (id: string, content: string) => {
+  //   const itemUpdate = lists.map((list) => {
+  //     if (list.id === id) {
+  //       list.content = content;
+  //     }
+  //     return list;
+  //   });
+  //   setLists(itemUpdate);
+  // };
 
   // ver.2
   const handleUpdate = async (item: TodosList) => {
-    updateTodoMutation.mutate(item);
+    try {
+      const updatedTodo = await updateTodosList(item);
+      setLists((prev) =>
+        prev.map((list) => (list.id === item.id ? updatedTodo : list))
+      );
+    } catch (e) {
+      console.error("error", e);
+    }
   };
+
+  // ver.1
+  // const searchItem = () => {
+  //   // if (searchInput.length === 0) {
+  //   //   return;
+  //   // }
+
+  //   const result: TodosList[] = lists.filter((item) => {
+  //     return item.content.includes(searchInput);
+  //   });
+  //   setSearchLists(result);
+  // };
+
+  // ver.2
+  const searchItem = async () => {
+    try {
+      const searchedTodo = await searchTodosList(2, searchInput);
+      setSearchLists(searchedTodo);
+    } catch (e) {
+      console.error("error", e);
+    }
+  };
+
+  // ver.3 - then 방식
+  // const searchItem2 = () => {
+  //   try {
+  //     searchTodosList(2, searchInput)
+  //       .then((todos) => setSearchLists(todos))
+  //       .catch((error) => console.log(error));
+  //   } catch (e) {
+  //     console.error("error", e);
+  //   }
+  // };
 
   const toggleCalendar = () => {
     setShowCalendar(!showCalendar);
   };
 
+  const showTodoList = async () => {
+    try {
+      const originTodo = await getTodosList(selectedDate as Date);
+      setLists(originTodo);
+      console.log(originTodo);
+    } catch (e) {
+      console.error("error", e);
+    }
+  };
+
   const onDateChange = (newData: SelectedDate) => {
     setSelectedDate(newData);
   };
-
-  if (isLoading) return <div>Loading...</div>;
-  if (error) return <div>Error loading data</div>;
 
   return (
     <div>
@@ -121,12 +166,7 @@ function App() {
           value={searchInput}
           onChange={(event) => setSearchInput(event?.target.value)}
         />
-        <button
-          type="button"
-          onClick={() =>
-            queryClient.invalidateQueries({ queryKey: ["searchTodo"] })
-          }
-        >
+        <button type="button" onClick={searchItem}>
           검색
         </button>
       </S.InputBox>
@@ -142,7 +182,7 @@ function App() {
         </button>
       </S.InputBox>
       <S.TodoWrapper>
-        {searchInput.length > 0 && searchLists
+        {searchInput.length > 0
           ? searchLists.map((list) => {
               return (
                 <TodoItem
@@ -153,7 +193,7 @@ function App() {
                 />
               );
             })
-          : lists?.map((list) => {
+          : lists.map((list) => {
               return (
                 <TodoItem
                   key={list.id}

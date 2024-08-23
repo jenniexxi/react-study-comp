@@ -1,5 +1,4 @@
 import { axiosInstance } from "./api"; 
-import dayjs from "dayjs";
 
 export type TodosList = {
   id: string;
@@ -25,7 +24,7 @@ export const addTodosList = async (
 export const getTodosList = async (
   // user_id: number,
   // date 는 있을지 없을지 모르니까 ? (옵셔널) 처리
-  date?: Date
+  date?: string
 ): Promise<TodosList[]> => {
   const query = new URLSearchParams();
 
@@ -38,7 +37,7 @@ export const getTodosList = async (
   query.append("user_id", "2");
 
   if (date) {
-    query.append("date", dayjs(date).format("YYYY-MM-DD"));
+    query.append("date", date);
   }
 
   console.log(query.toString());
