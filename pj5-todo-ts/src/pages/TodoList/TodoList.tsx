@@ -38,7 +38,6 @@ function App() {
   const {
     data: lists,
     isLoading,
-
     error,
   } = useQuery({
     queryKey: ["getTodo", selectedDate],
@@ -104,12 +103,10 @@ function App() {
     setSelectedDate(newData);
   };
 
-  if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading data</div>;
 
   return (
     <div>
-      <h1>todo list</h1>
       <DayCalendar
         selectedDate={selectedDate as Date}
         toggleCalendar={toggleCalendar}
@@ -141,29 +138,33 @@ function App() {
           추가
         </button>
       </S.InputBox>
-      <S.TodoWrapper>
-        {searchInput.length > 0 && searchLists
-          ? searchLists.map((list) => {
-              return (
-                <TodoItem
-                  key={list.id}
-                  list={list}
-                  handleDelete={handleDelete}
-                  handleUpdate={handleUpdate}
-                />
-              );
-            })
-          : lists?.map((list) => {
-              return (
-                <TodoItem
-                  key={list.id}
-                  list={list}
-                  handleDelete={handleDelete}
-                  handleUpdate={handleUpdate}
-                />
-              );
-            })}
-      </S.TodoWrapper>
+      {isLoading ? (
+        <p>Loading...</p>
+      ) : (
+        <S.TodoWrapper>
+          {searchInput.length > 0 && searchLists
+            ? searchLists.map((list) => {
+                return (
+                  <TodoItem
+                    key={list.id}
+                    list={list}
+                    handleDelete={handleDelete}
+                    handleUpdate={handleUpdate}
+                  />
+                );
+              })
+            : lists?.map((list) => {
+                return (
+                  <TodoItem
+                    key={list.id}
+                    list={list}
+                    handleDelete={handleDelete}
+                    handleUpdate={handleUpdate}
+                  />
+                );
+              })}
+        </S.TodoWrapper>
+      )}
       {showCalendar && (
         <Portal>
           <Modal

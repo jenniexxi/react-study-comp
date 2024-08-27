@@ -17,6 +17,8 @@ export const InputBox = styled.div`
     width: 70px;
     height: 40px;
     padding: 0;
+    background-color: ${({ theme }) => theme.lightversion.primary};
+    color: #fff;
   }
 `;
 

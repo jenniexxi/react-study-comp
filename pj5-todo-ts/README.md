@@ -179,3 +179,10 @@
 ### 2. useMutation
 - CRUD 중 “CUD”에만 사용 (어떤 액션을 통해서 데이터 변경 작업이 있을 때 주로 사용)
 - onSuccess, onError, mutation ...
+  
+  
+---
+---
+
+## 6. router, Layout, Outlet, useNavigate, useParam 적용하기
+
