@@ -48,6 +48,11 @@ export const ButtonBox = styled.div`
   button {
     &:first-child {
       margin-right: 10px;
+      background-color: #bbb;
+      color: #fff;
+    }
+    &:last-child {
+      border: 1px solid #c1c1c1;
     }
   }
 `;

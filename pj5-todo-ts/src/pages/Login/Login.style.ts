@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const LgoinWrap = styled.div`
@@ -20,8 +21,9 @@ export const LoginForm = styled.form`
   margin: 50px auto 0;
   ul {
     text-align: left;
+    padding-bottom: 20px;
     li {
-      margin-bottom: 20px;
+      margin-bottom: 10px;
       label {
         display: block;
         margin-bottom: 10px;
@@ -33,6 +35,7 @@ export const LoginForm = styled.form`
         border-radius: 5px;
         border: 1px solid #d9d9d9;
         padding-left: 10px;
+        margin-bottom: 10px;
       }
     }
   }
@@ -43,6 +46,21 @@ export const LoginForm = styled.form`
     background-color: ${({ theme }) => theme.lightversion.primary};
     font-size: 18px;
     color: #fff;
-    margin-top: 20px;
+    margin-top: 10px;
   }
+`;
+
+export const DescText = styled(Link)`
+  color: ${({ theme }) => theme.lightversion.fontSecondary};
+  &:hover {
+    text-decoration: underline;
+    color: ${({ theme }) => theme.lightversion.fontSecondary};
+  }
+`;
+
+export const ErrorMsg = styled.div`
+  font-size: 12px;
+  color: ${({ theme }) => theme.lightversion.error};
+  margin-top: -5px;
+  padding-bottom: 2px;
 `;
