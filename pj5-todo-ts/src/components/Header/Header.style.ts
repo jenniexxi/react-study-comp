@@ -32,3 +32,9 @@ export const UserSelect = styled.div`
 export const UserInfo = styled.div`
   font-weight: bold;
 `;
+
+export const LogOut = styled.button`
+  margin-left: 20px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+`;

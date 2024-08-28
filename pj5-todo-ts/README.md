@@ -161,13 +161,12 @@
 
 - 기존 isChecked 를 삭제, completed 로 교체 (TodoItem 에서 isChecked 들어간 부분 수정)
 - setIsChecked 를 completedUpdate 로 바꿈
-- api 새로 만들지 않고, 기존 update api 가져다 씀 (update api - put todos)  
-  
-  
-  
-  
+- api 새로 만들지 않고, 기존 update api 가져다 씀 (update api - put todos)
+
 ## 5. tanstack query (react query) - useQuery, useMutation
+
 ### 1. useQuery
+
 - API 관리 관리해주는 hook (use 로 시작하면 보통 hook)
 - useEffect 를 사용해서 주로 씀
 - CRUD 중 “R”에만 사용 / get, post 상관없이 사용
@@ -175,13 +174,13 @@
 - 캐싱, 에러, 성공, 로딩 등 (data, isLoading, isSuccess ...) 관리에 용이
 - 사용법 : querykey("getTodo", selectedDate, isSearch, input)
 
-
 ### 2. useMutation
+
 - CRUD 중 “CUD”에만 사용 (어떤 액션을 통해서 데이터 변경 작업이 있을 때 주로 사용)
 - onSuccess, onError, mutation ...
-  
-  
+
 ---
+
 ---
 
 ## 6. router, Layout, Outlet, useNavigate, useParam 적용하기
@@ -190,3 +189,4 @@
 
 ## 8. react useForm hook 적용
 
+## 9. react cookie
