@@ -1,61 +1,70 @@
 import * as S from "./BoardWrite.style";
 import InfoAlram from "@resources/svg/infoalram";
 import { IconAdd, ImgBoard1, ImgClose } from "@resources/images";
-import { ChangeEvent, FormEvent, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import WriteAPI from "@api/Write";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useMutation } from "@tanstack/react-query";
+
+const tags = ["무이자할부", "카드사할인", "쿠폰", "포인트", "통신사"];
+
+type FormData = {
+  title: string;
+  store: string;
+  paytype: string;
+  type: string;
+  content: string;
+};
 
 const BoardWrite = () => {
-  const [title, setTitle] = useState("");
-  const [textArea, setTextArea] = useState("");
-  const [place, setPlace] = useState("");
-  const [isSubmit, setIsSubmit] = useState(false);
+  // const [title, setTitle] = useState("");
+  // const [textArea, setTextArea] = useState("");
+  // const [place, setPlace] = useState("");
+  const [activeTags, setActiveTags] = useState<string[]>([]);
   const navigate = useNavigate();
 
-  const changeTitle = (event: ChangeEvent<HTMLInputElement>) => {
-    setTitle(event.currentTarget.value);
+  const {
+    register,
+    handleSubmit,
+    // watch,
+    // setValue,
+    formState: { errors },
+  } = useForm<FormData>();
+
+  // 기존 방식과 다른 이유는 body 로 해서 묶어서 가져왔으니
+  // 여기로 가져올 때는 뿌려줘야함
+  // but, FormData 형식과 이름을 맞췄으니 그대로 가져오면 된다.
+  const mutation = useMutation({
+    mutationFn: (data: FormData) => {
+      console.log(data);
+      return WriteAPI.sendWrite({
+        ...data, userseq:'1', tab:'1'}
+      );
+    },
+    onSuccess: () => {
+      navigate("/");
+    },
+    onError: () => {
+      alert("글쓰기 실패");
+    },
+  });
+
+  const onSubmit: SubmitHandler<FormData> = async (data) => {
+    mutation.mutate(data);
   };
 
-  const changeTextArea = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    setTextArea(event.currentTarget.value);
-  };
-
-  const submitForm = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    console.log("title:", title, "place:", place);
-
-    if (!title) {
-      setIsSubmit(true);
-      return;
-    }
-
-    try {
-      const getapi = await WriteAPI.sendWrite({
-        title: title,
-        content: textArea,
-        paytype: "1",
-        store: place,
-        userseq: "1",
-        type: "1",
-        tab: "1",
-      });
-
-      if (getapi) {
-        alert("새 글 등록 성공");
-        navigate("/");
-      }
-    } catch (e) {
-      console.log("error", e);
-    }
-  };
-
-  const changePlace = (event: ChangeEvent<HTMLInputElement>) => {
-    setPlace(event.currentTarget.value);
+  const handleTagClick = (tag: string) => {
+    setActiveTags((prevTags) =>
+      prevTags.includes(tag)
+        ? prevTags.filter((t) => t !== tag)
+        : [...prevTags, tag]
+    );
   };
 
   return (
     <S.BoardWriteContainer>
-      <S.BoardForm action="" onSubmit={submitForm}>
+      <S.BoardForm action="" onSubmit={handleSubmit(onSubmit)}>
         <S.TopTitleWrapper>
           <S.TopTitleArea>
             <S.BoardCategory>커뮤니티 &gt; 꿀팁자랑</S.BoardCategory>
@@ -70,13 +79,23 @@ const BoardWrite = () => {
             <S.ContsTitle>게시글 제목</S.ContsTitle>
             <div>
               <input
-                onChange={changeTitle}
+                {...register("title", {
+                  minLength: {
+                    value: 4,
+                    message: "4자이상 입력해주세요",
+                  },
+                  required: { value: true, message: "제목은 필수 값입니다." },
+                  maxLength: {
+                    value: 20,
+                    message: "20자 이내로 입력하세요",
+                  },
+                })}
                 type="text"
                 placeholder="브랜드와 제품명을 적어주세요"
               />
             </div>
-            {isSubmit && !title && (
-              <S.MsgError>게시글 제목을 입력해주세요.</S.MsgError>
+            {errors.title && (
+              <S.MsgError>{errors.title.message}</S.MsgError>
             )}
           </S.ContsArea>
           <S.ContsArea>
@@ -84,18 +103,23 @@ const BoardWrite = () => {
             <S.ContsBox>
               <S.itemBoxLeft>
                 <input
-                  onChange={changePlace}
+                  {...register("store", {
+                    required: "구매처(1,2,3)는 필수 값입니다.",
+                  })}
                   type="text"
                   placeholder="예시) 쿠팡"
                 />
+                {errors.title && (
+                  <S.MsgError>{errors.title.message}</S.MsgError>
+                )}
               </S.itemBoxLeft>
               <S.itemBoxRight>
-                <select name="" id="">
+                <select id="" {...register("paytype")}>
                   <option value="">결제할인 수단1</option>
                   <option value="">결제할인 수단2</option>
                   <option value="">결제할인 수단3</option>
                 </select>
-                <select name="" id="">
+                <select id="" {...register("type")}>
                   <option value="">총 할인율 0%</option>
                   <option value="">총 할인율 10%</option>
                   <option value="">총 할인율 20%</option>
@@ -112,11 +136,24 @@ const BoardWrite = () => {
           <S.ContsArea>
             <S.ContsTitle>할인 받은 유형</S.ContsTitle>
             <S.TagItem>
-              <span>무이자할부</span>
+              {tags.map((tag) => (
+                <span
+                  key={tag}
+                  onClick={() => handleTagClick(tag)}
+                  style={{
+                    backgroundColor: activeTags.includes(tag)
+                      ? "d1e7dd"
+                      : "transparent",
+                  }}
+                >
+                  {tag}
+                </span>
+              ))}
+              {/* <span>무이자할부</span>
               <span>카드사할인</span>
               <span>쿠폰</span>
               <span>포인트</span>
-              <span>통신사</span>
+              <span>통신사</span> */}
             </S.TagItem>
             <S.ContsDesc>
               <S.IconInfo>
@@ -129,7 +166,7 @@ const BoardWrite = () => {
             <S.ContsTitle>자세한 설명</S.ContsTitle>
             <S.TextAreaBox>
               <S.ContsTextArea
-                onChange={changeTextArea}
+                {...register("content")}
                 placeholder="윰탱구리님, 어떤 혜택을 받으셨나요?"
               ></S.ContsTextArea>
               <S.CountBox>
